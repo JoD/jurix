@@ -89,18 +89,16 @@ The inference was developed for SAT(ID) as described in \cite{Jansen2016}, but w
 It calculates for each literal if its value could impact the result of a constraint.
 If this is not the case, the literal is considered irrelevant.
 Consider the following extension to theory T (and corresponding extension of vocabulary and structure) to define the registration type:
-\begin{left}
-
-
-\{~\\
-IsRegistrationType = SocialDwelling \leftarrow Seller = LicencedSeller \wedge Purpose = SocialHabitation.
-~\\
-IsRegistrationType = FamilyDwelling \leftarrow BuyerType = NaturalPerson \wedge Price =< Limit.
-~\\
-IsRegistrationType = Other \leftarrow IsRegistrationType \neq SocialDwelling \wedge IsRegistrationType \neq FamilyDwelling.~\\
-\}~\\
-\exists x : IsRegistrationType = x.
-\end{left}
+\begin{align*}
+& \{ \\
+& ~ IsRegistrationType = SocialDwelling \leftarrow Seller = LicencedSeller \\ 
+& ~~ \wedge Purpose = SocialHabitation.\\
+& ~ IsRegistrationType = FamilyDwelling \leftarrow BuyerType = NaturalPerson \wedge Price =< Limit. \\
+& ~ IsRegistrationType = Other \leftarrow IsRegistrationType \neq SocialDwelling \\
+& ~~ \wedge IsRegistrationType \neq FamilyDwelling.\\
+& \}\\
+& \exists x : IsRegistrationType = x.
+\end{align*}
 
 In case the estate has not been destined for social habitation ($Purpose \neq SocialHabitation$), the registration type cannot be \textit{SocialDwelling} anymore.
 In other words, whether the \textit{Seller} is \textit{LicencedSeller}, is irrelevant.
@@ -111,28 +109,28 @@ Similarly, if the Price of the dwelling is above a certain limit, the estate can
 The calculation of relevance is based on well-known justification theory (e.g.; \cite{Denecker93, Denecker2015}.
 The direct justification of a literal gives a reason why this literal is true.
 %Definition : For a domain literal $p$ \in $defs(\Delta)$ and s set $Jd$ of literals $l$ is a direct justification of a domain literal $p$
-%Consider the literals l1...ln, p with $p$ \in $defs(\Delta)$ and defined by $p \leftarrow l1 \odot ... \odot ln$.  
-Consider the literals $l$, $l_1$,.., $l_n$ and $p$ with $p=l$ or $p=~l$.
-A set of literals $Jd$ is a direct justification of $p$ = $l$:
-if $p$ \leftarrow ~ $l_1$\wedge...\wedge $l_n$ then $p$ = true if $Jd = \{l_1,...,l_n\}$;
-if $p$ \leftarrow ~ $l_1$ \vee...\vee $l_n$ then $p$ = l if $Jd = \{li\}$ for some i.
-A set of literals $Jd$ is a direct justification of $~p$ = $l$:
-if $p$ \leftarrow ~$l_1$ \wedge...\wedge $l_n$ then $~p$ = l if $Jd = \{~l_i\}$ for some i;  
-if $p$ \leftarrow ~$l_1$ \vee...\vee $l_n$ then $~p$ = l if $Jd = \{~J_1, ..., ~J_n\}$.
+%Consider the literals l1 \ldots ln, p with $p$ \in $defs(\Delta)$ and defined by $p \leftarrow l1 \odot  \ldots  \odot ln$.  
+Consider the literals $l$, $l_1$,.., $l_n$ and $p$ with $p=l$ or $p=\neg l$.
+A set of literals $Jd$ is a direct justification of $p = l$:
+if $p \leftarrow \neg l_1 \wedge \ldots \wedge l_n$ then $p = true$ if $Jd = \{l_1, \ldots ,l_n\}$;
+if $p \leftarrow \neg l_1 \vee \ldots \vee l_n$ then $p=l$ if $Jd = \{li\}$ for some i.
+A set of literals $Jd$ is a direct justification of $\neg p = l$:
+if $p \leftarrow \neg l_1 \wedge \ldots \wedge l_n$ then $\neg p = l$ if $Jd = \{~l_i\}$ for some $i$;  
+if $p \leftarrow \neg l_1 \vee \ldots \vee l_n$ then $\neg p = l$ if $Jd = \{\neg J_1,  \ldots , \neg J_n\}$.
 A total justification $J$ for a literal $p$ contains its direct justifications and the direct justifications of $p$'s direct justifications.
 A path $\Pi$ is a sequence of direct justifications from the root to the bottom, i.e. to the point where the direct justification contains only parameter base literals.
 For a given literal $p$ from theory $T$ multiple justification paths may be constructed.
-They can be characterized by their truth order f$<_t$u$<_t$t and their precision order  u$<_p$f and u$<_p$t.
+They can be characterized by their truth order $f <_t u <_t t$ and their precision order  $u<_p f$ and $u<_p t$.
 %A literal is irrelevant for $P$t if its value does not affect any justification for $Pt$\ref{Jansen2016}.
 Instead of searching for a total interpretation $I$ of $T:\Sigma$ such that $I \models T$, the inference of relevance searches for a partial interpretation $I$ and a justification $J$ that justifies $p_T$ in $I$ \cite{Jansen2016}.
 \begin{definition}
 \label{def1}
 \cite{Jansen2016}
-Given a PC(ID) theory T = \{$p_T$, $\Delta$ \} and a partial interpretation $\Iota$, we define the set of relevant literals, denoted $R_T(I)$ as follows~\\
-    \bullet $p_T$ is relevant if $p_T$ is not justified,~\\
-    \bullet if $l$ $\in$ $R_T(I)$, (l,l') $\in$ $dd_\Delta$ and l' is not justified, then l' is relevant.
+Given a PC(ID) theory $T = \{p_T , \Delta \}$ and a partial interpretation $\Iota$, we define the set of relevant literals, denoted $R_T(I)$ as follows:
+\begin{itemize}
+    \item $p_T$ is relevant if $p_T$ is not justified,
+    \item if $l \in R_T(I)$, $(l,l') \in dd_\Delta$ and $l'$ is not justified, then $l'$ is relevant.
+\end{itemize}
 \end{definition}
-
-
 
 
