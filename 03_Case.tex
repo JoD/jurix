@@ -1,0 +1,138 @@
+\section{Case study}
+\subsection{Background}
+\label{sec:background}
+The legislation on registration duties was thoroughly reformed with the law of June 1st 2018. % check exacte naam wet
+In the previous law most family houses would either be subject to the standard duty of 10\%, or to a reduced duty of 5\% for modest houses. 
+To determine whether a house would classify as 'modest', the notion of \textit{cadastral income} was central.
+It is a fictitious amount assigned to the house to represent the theoretical rental value of the house on reference date 01/01/1975.
+Only for some houses this value got reviewed to current standards.
+The \textit{cadastral income} was compared to a limit that depended on the number of children of the buyers.
+On top of it, an elaborate system of \textit{abattement}(reductions on the taxable base of the house) with their own conditions existed.
+In the new legislation that is in effect as from June 1st 2018 rules are simplified and the concept of \textit{cadastral income} was obliterated.
+The system of \textit{abbatement} was abandoned and replaced by a fixed discount that follows the rules to determine the tax rate.
+An overview model of the legislation prior and post June 2018 be found in Figure \ref{fig:DRD}.
+
+%\begin{sidewaysfigure}
+\begin{figure}[h]
+    \includegraphics[angle=0,width = 0.8\linewidth]{img/A.png}
+  	\caption{High-level structure of Belgian registration duties prior and post 1 June 2018.}
+	\label{fig:DRD}
+\end{figure}
+%\end{sidewaysfigure}
+
+
+\subsection{IDP theory}
+\subsubsection{Regulation prior to June 1st 2018}
+\label{sec:prior2018}
+The initial analysis of the domain took a considerable amount of time, as the modeller did not have any prior domain knowledge.
+Note that, especially with the approach used, the prior analysis of the domain and its formalization with the use of DMN, could be done by a domain expert \cite{iets over DMN en gebruik door business users}.
+But in any case, an additional analysis and understanding of the domain by the IDP-modeller is unavoidable, as the exact formulation impacts the way constructs are reflected in the interface \cite{Marjolein}.
+Typical for the former regulation was the use of multiple versions of the same concept at different law articles.
+Examples are the definition of 'first property' and the establishment obligation that were interpreted differently in the context of the type of real estate (TRE) and the context of \textit{abattement}.
+%\begin{sidewaysfigure}
+\begin{figure}[h]
+    \includegraphics[angle=0,width = 1\linewidth]{img/codeOld.png}
+  	%\caption{geen captation:voorbeeldcode.}
+	\label{fig:code}
+\end{figure}
+%\end{sidewaysfigure}
+
+The result is a large number of concepts, that also needs to be defined at a very fine-grained level to avoid confusion.
+From an end-user point of view this creates an additional challenge to keep the interface clear.
+In the original version the code was used with the interface proposed in \cite{Ingmar}.
+Note that the IDP model of the registration duties did not have to be amended to use the functionality foreseen in this interface.
+This demonstrates the distinction between the knowledge base and the inferences to use this information.
+An important form of inference that is implemented by the interface is propagation.
+This means that the consequences of the choice of the user are calculated, and if this results in an atom becoming certainly true or certainly false, these are highlighted in resp. green or red.%uitleggen in methode en daarnaar verwijzen%
+This allows the end user to see the impact of his selections at a glance.
+For a business expert, this offers a large advantage.
+If a certain registration type has been derived to be impossible (i.e. highlighted in red), the notary knows that some other information does not have to be requested anymore, because as a business expert he knows that it is related to the registration type in question.
+However, for naive end user, e.g. a first time buyer, it is not possible to know which information might still be relevant.
+Moreover, both the chosen as the propagated selections appear in green and red, making it hard to see the difference between them (and hence, knowing which selection can be amended).
+
+Another inference implemented by the interface is optimization.
+At the end multiple combinations of \textit{abattement} and registration type might be possible, each leading to an other duty to be paid.
+Typically buyers would prefer to use the option that minimizes this amount, and it can be selected by using the applicable inference in the interface.
+As a final remark, the interface does not make a distinction between important, often used concepts and less used concepts.
+All of the available concepts are shown in one screen, in the order of definition, which is a disadvantage given the large number of fine-grained concepts.
+
+%%insert printscreen GUI
+
+\subsubsection{Regulation as from June 1st 2018}
+As discussed above, the regulation changed considerably as from June 1st 2018.
+In our application we modelled the new regulation (without transitional measures for transactions concluded prior to June 1st but registered after this date).
+One of the claims of KBP is that it allows agile adaptations, as all and only conditions are centralized in the concise knowledge base.
+It took a half day of work to implement the profound changes that were described in \ref{sec:background}: two hours were needed to search, analyze and model the new legislation using DMN; and an additional hour and a half were needed to amend the IDP-code. %exacte timings opzoeken%
+So after a short development period the new regulation is ready to be used in the existing interface.
+However, because of the disadvantages mentioned in \ref{sec:prior2018} we decided to develop a new and easier interface.
+In the new interface it is possible to give literals a priority code.
+Only literals with priority code \textit{1} will be shown in the main screen, literals with priority code \textit{2} will be shown upon request or when relevant.
+Literals can be given a label that may contain spaces.
+When hoovering over them, a short explanation is shown.
+When clicked, a long explanation pops up.
+This feature helps to reduce complexity of the code.
+Law texts often contain very detailed definitions of concepts, that are sometimes obvious or trivial for experts.
+To avoid confusion and enable use for less versed users, these fine-grained definitions would need to be modelled in the previous interface, leading to excess literals and code.
+In the new interface higher-level definitions with explanation suffice.
+This led us to further simplify the knowledge base.
+%add example%
+Usability was further improved by the introduction of relevance, a new form of inference that is discussed in section \ref{sec:relevance}.
+The outlook of the interface was changed to make a clearer distinction between the choices made by the user and the propagated consequences, and an explanation was added to the latter, referring back to the choices that explain its propagation.
+%iets bij zeggen over de tijd die het neemt om code op deze manier aan te passen?%
+
+\subsection{Relevance}
+\label{sec:relevance}
+In the previous paragraphs some of the difficulties and solutions to design a clear interface given the inherently complex legislation were discussed.
+In this section we discuss the inference of relevance as an important aid to keep the overview of missing parts of information.
+The inference was developed for SAT(ID) as described in \cite{Jansen2016}, but was not included in the developed interface until now.
+
+It calculates for each literal if its value could impact the result of a constraint.
+If this is not the case, the literal is considered irrelevant.
+Consider the following extension to theory T (and corresponding extension of vocabulary and structure) to define the registration type:
+\begin{left}
+
+
+\{~\\
+IsRegistrationType = SocialDwelling \leftarrow Seller = LicencedSeller \wedge Purpose = SocialHabitation.
+~\\
+IsRegistrationType = FamilyDwelling \leftarrow BuyerType = NaturalPerson \wedge Price =< Limit.
+~\\
+IsRegistrationType = Other \leftarrow IsRegistrationType \neq SocialDwelling \wedge IsRegistrationType \neq FamilyDwelling.~\\
+\}~\\
+\exists x : IsRegistrationType = x.
+\end{left}
+
+In case the estate has not been destined for social habitation ($Purpose \neq SocialHabitation$), the registration type cannot be \textit{SocialDwelling} anymore.
+In other words, whether the \textit{Seller} is \textit{LicencedSeller}, is irrelevant.
+Similarly, if the Price of the dwelling is above a certain limit, the estate cannot be registered as a \textit{FamilyDwelling}, and the \textit{BuyerType} becomes irrelevant.
+%%in praktijk na te kijken of dit ook zo in de interface aangegeven wordt!
+% iets toe te voegen over constraint
+
+The calculation of relevance is based on well-known justification theory (e.g.; \cite{Denecker93, Denecker2015}.
+The direct justification of a literal gives a reason why this literal is true.
+%Definition : For a domain literal $p$ \in $defs(\Delta)$ and s set $Jd$ of literals $l$ is a direct justification of a domain literal $p$
+%Consider the literals l1...ln, p with $p$ \in $defs(\Delta)$ and defined by $p \leftarrow l1 \odot ... \odot ln$.  
+Consider the literals $l$, $l_1$,.., $l_n$ and $p$ with $p=l$ or $p=~l$.
+A set of literals $Jd$ is a direct justification of $p$ = $l$:
+if $p$ \leftarrow ~ $l_1$\wedge...\wedge $l_n$ then $p$ = true if $Jd = \{l_1,...,l_n\}$;
+if $p$ \leftarrow ~ $l_1$ \vee...\vee $l_n$ then $p$ = l if $Jd = \{li\}$ for some i.
+A set of literals $Jd$ is a direct justification of $~p$ = $l$:
+if $p$ \leftarrow ~$l_1$ \wedge...\wedge $l_n$ then $~p$ = l if $Jd = \{~l_i\}$ for some i;  
+if $p$ \leftarrow ~$l_1$ \vee...\vee $l_n$ then $~p$ = l if $Jd = \{~J_1, ..., ~J_n\}$.
+A total justification $J$ for a literal $p$ contains its direct justifications and the direct justifications of $p$'s direct justifications.
+A path $\Pi$ is a sequence of direct justifications from the root to the bottom, i.e. to the point where the direct justification contains only parameter base literals.
+For a given literal $p$ from theory $T$ multiple justification paths may be constructed.
+They can be characterized by their truth order f$<_t$u$<_t$t and their precision order  u$<_p$f and u$<_p$t.
+%A literal is irrelevant for $P$t if its value does not affect any justification for $Pt$\ref{Jansen2016}.
+Instead of searching for a total interpretation $I$ of $T:\Sigma$ such that $I \models T$, the inference of relevance searches for a partial interpretation $I$ and a justification $J$ that justifies $p_T$ in $I$ \cite{Jansen2016}.
+\begin{definition}
+\label{def1}
+\cite{Jansen2016}
+Given a PC(ID) theory T = \{$p_T$, $\Delta$ \} and a partial interpretation $\Iota$, we define the set of relevant literals, denoted $R_T(I)$ as follows~\\
+    \bullet $p_T$ is relevant if $p_T$ is not justified,~\\
+    \bullet if $l$ $\in$ $R_T(I)$, (l,l') $\in$ $dd_\Delta$ and l' is not justified, then l' is relevant.
+\end{definition}
+
+
+
+

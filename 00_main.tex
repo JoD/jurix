@@ -1,0 +1,96 @@
+% PLEASE USE THIS FILE AS A TEMPLATE FOR THE PUBLICATION 
+% Check file IOS-Book-Article.tex
+%
+
+\documentclass{IOS-Book-Article}     %[seceqn,secfloat,secthm]
+%\usepackage{mathptmx}
+%\usepackage[T1]{fontenc}
+%\usepackage{times}%
+\usepackage{graphicx}
+\newtheorem{definition}{Definition}
+%
+%%%%%%%%%%% Put your definitions here
+
+
+%%%%%%%%%%% End of definitions
+\begin{document}
+\begin{frontmatter}          % The preamble begins here.
+%
+%\pretitle{}
+\title{Using legal text in the knowledge base paradigm}
+\runningtitle{}
+%\subtitle{}
+
+% For one author:
+%\author{\fnms{} \snm{}}
+%\address{}
+%\runningauthor{}
+%
+% Two or more authors:
+\author[A]{\fnms{Marjolein} \snm{Deryck}},
+\author[B]{\fnms{Jo} \snm{Devriendt}}
+\author[B]{\fnms{Simon} \snm{Marynissen}}
+\author[A]{\fnms{Joost} \snm{Vennekens}}
+\runningauthor{Deryck M. e.a.}
+\address[A]{Department of Computer Science, KU Leuven, Campus De Nayer, Sint-Katelijne Waver, Belgium}
+\address[B]{Department of Computer Science, KU Leuven, Leuven, Belgium}
+%
+\begin{abstract}
+The Knowledge Base Paradigm advocates the accumulation of domain knowledge in a formal knowledge base to enable its use for multiple applications.
+This practice induces flexibility and agility, as changes in the domain are reflected directly in the knowledge base, without affecting the algorithms that use this information.
+Similarly, new ways to use this information can be developed independently of the specific domain and are highly portable.
+This paper demonstrates these characteristics with the case of Belgian registration duties. 
+The concerned legislation changed considerably mid 2018.  
+Models for the former and current legislation are developed with IDP.
+They are used in accordance with an interactive user interface for which a new implementation to interactively calculate and highlight relevant information was developed.
+\end{abstract}
+
+
+\begin{keyword}
+Knowledge Base Paradigm, automatic configuration, IDP
+\end{keyword}
+
+\end{frontmatter}
+
+%%%%%%%%%%% The article body starts:
+
+
+\input{01_Intro}\\
+\input{02_Method}\\
+\input{03_Case}\\
+\input{04_Related}\\
+\input{05_Conclusion}\\
+
+
+\bibliographystyle{splncs}
+{\footnotesize\bibliography{bib.bib}}
+
+
+%%%%%%%%%%% The bibliography starts:
+\begin{thebibliography}{99}
+
+\bibitem{Jansen2016}
+Jansen, J., Bogaerts, B., Devriendt, J., Janssens, G.,  Denecker, M. (2016). Relevance for SAT(ID). Proceedings of the Twenty-Fifth International Joint Conference on Artificial Intelligence, 596~-~602.
+
+\bibitem{Denecker2015}
+Denecker, M., Brewka, G., Strass, H. (2015). A formal theory of justifications. In 13th International Conference on Logic Programming and Non-monotonic Reasoning (pp. 250–264). Springer.
+
+\bibitem{Denecker93}
+Denecker, M., & De Schreye, D. (1993). Justification semantics: a unifying framework for the semantics of logic programs. In Proc. of the Logic Programming and Nonmonotonic Reasoning Workshop (pp. 365–379).
+
+\bibitem{DMN}
+OMG: Decision Model and Notation 1.1 (2016
+\bibitem{IDP}
+ de  Cat,  B.,  Bogaerts,  B.,  Bruynooghe,  M.,  Denecker,  M.:   Predicate  logic  as  a
+modelling language: The IDP system.  CoRR
+abs/1401.6312
+(2014)
+\bibitem{Ingmar}
+Denecker, M., & De Schreye, D. (1993). Justification semantics: a unifying framework for the semantics of logic programs. In Proc. of the Logic Programming and Nonmonotonic Reasoning Workshop (pp. 365–379).
+\bibitem{Marjolein}
+Deryck, Marjolein, Hasic, faruk, Vanthienen, jan, & Vennekens, joost. (accepted). A case based inquiry into the decision model and notation (DMN) and the knowledge base (KB) paradigm. Proceedings of RuleML RR 2018, Proceedings of RuleML RR 2018.
+
+
+\end{thebibliography}
+\end{document}
+

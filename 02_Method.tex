@@ -1,0 +1,47 @@
+\section{Method}
+This case started in 2017, when the former legislation on registration duties was still applicable.
+The use of Decision Model and Notation(DMN) was chosen as a methodology to analyze the applicable legislation and reflect it in connected decision tables \cite{DMN}. 
+The main motivations to use DMN for this purpose are the availability and wide use of the open standard; and the proven integratability with IDP \cite{Ingmar}.
+%After the analysis phase, the structured knowledge on the domain was translated to FO(.) for use in the Knowledge Base System (KBS) IDP \cite{IDP}.
+For the application we use the IDP system, a state-of-the-art knowledge base system developed at KU Leuven \cite{IDP}.
+In the IDP system the domain knowledge concerning registration duties is expressed in a rich, typed extension of First Order Logic to create a condensed knowledge base on the subject. 
+It exists of a threefold structure.
+A \textit{vocabulary} $\Sigma$ is a set of types, function and predicate symbols.
+A \textit{theory } $T$ over $\Sigma$ is a set of sentences that expresses information on the domain in the form of constraints or definitions $\Delta$ and uses only symbols of $\Sigma$.
+A \textit{structure} $I$ of $\Sigma$ represents a world.
+It is an interpretation of (a part of) the vocabulary $\Sigma$ and associates functions and relations with their respective symbols.
+A model $I$ of a theory T is an interpretation that satisfies all the sentences of T : $I \models T$.
+For example, our application needs to select the appropriate tax rate to calculate the registration duty, depending on the registration type of the estate.
+The vocabulary $\Sigma$ consist of types Rate and RegistrationType; and functions ApplicableRate:Rate and IsRegistrationType:RegistrationType.
+Theory $T$ over $\Sigma$ consists of a definition of the applicable rate and the constraint that a rate should be specified:
+\begin{center}
+\[
+\{
+ApplicableRate = 10 \leftarrow IsRegistrationType = Other.
+~\\
+ApplicableRate = 1 \leftarrow IsRegistrationType = SocialDwelling.
+~\\
+ApplicableRate = 7 \leftarrow IsRegistrationType = FamilyDwelling.\}
+~\\
+\exists x : ApplicableRate = x.\]
+\end{center}
+The domain of Belgian registration duties is specified in the structure:\\
+\[
+Rate^I =& \{ 1,7,10\}\]~\\
+\[RegistrationType^I =&\{Other,SocialDwelling,FamilyDwelling\}\]~\\
+
+
+A variety of inferences can be applied to use this knowledge in applications.
+With \textit{model expansion} IDP calculates an instance $J$ of the part of the vocabulary not covered by $I$ such that the two instances together satisfy theory $T$, or put differently: $I\cup J \models T$.
+IDP can also \textit{optimize} instance $J$ for a given term.
+By creating a term over $\Sigma$ of the form ${ min(\forall x, ApplicableRate = x, x)}$ and subsequently using the optimization inference on it, the model with the lowest applicable rate is calculated.
+In our application the inferences of \textit{propagation} and \textit{relevance} are of main importance. 
+%The more information is specified in structure $I$, the less free literals of vocabulary $\Sigma$ need to be determined in instance $J$, hence the less possible models remain.
+Propagation is the calculation of the atoms from $\Sigma$ with respect to theory $T$ and based on the input information in $I$.
+The inferences of relevance is discussed in length in section \ref{sec:relevance}.
+
+As a user-friendly interface is of major importance to allow notaries and citizens to work with the application, the resulting knowledge base was used in combination with the existing interface from \cite{Ingmar}.
+In the second run the existing models were adapted to the new legislation (applicable as from June 1st 2018) and new user requirements regarding the interface were incorporated in an enhanced user interface.
+
+
+
