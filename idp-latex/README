@@ -1,0 +1,9 @@
+
+Stel dat de folder van je tekst dir heet, dan kan je het volgende doen om oa de krrlib te updaten naar de recentste versie:
+cd dir
+cd idp-latex
+git checkout master
+git pull
+cd -
+
+Als je er zelf veranderingen aan doet, moet je die committen en pushen vanuit idp-latex.

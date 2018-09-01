@@ -1,0 +1,487 @@
+\usepackage{ifthen}
+\usepackage{url}
+% \usepackage{cite} DOES NOT WORK WITH ALL STYLES
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{import}
+\subimport{packages/}{xparse}
+\usepackage{amsmath}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{xspace}
+\usepackage{datatool}
+\usepackage{glossaries}
+
+%ensured math mode with correct spacing
+\providecommand\m[1]{\ensuremath{#1}\xspace}
+\renewcommand{\m}[1]{\ensuremath{#1}\xspace}
+\newcommand{\trval}[1]{\m{\mathbf{#1}}}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%         LOGICAL STUFF: Operators, theories, ....         %%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%NOTE: arrows are not surrounded by the \m command. THe reason is that they are math operators that have
+% other spacing 
+% For instance: L\to L has spacing between L and \to and betwee \to and L, while L{\to}L does not. 
+
+%% Logic
+% lor, land, lnot are standard. Extensions:
+	\newcommand{\limplies}{\Rightarrow}
+	\newcommand{\limpl}{\limplies}
+	\newcommand{\lequiv}{\Leftrightarrow}
+	\newcommand{\limpliedby}{\Leftarrow}
+	\newcommand{\limplied}{\limpliedby}
+	\newcommand{\lrule}{\leftarrow}
+	\newcommand{\cause}{\stackrel{c}{\lrule}}
+	\newcommand{\rul}{\leftarrow}
+	\newcommand{\ltrue}{\trval{t}}
+	\newcommand{\lfalse}{\trval{f}}
+	\newcommand{\lunkn}{\trval{u}}
+	\newcommand{\lincon}{\trval{i}}
+%related
+	\newcommand{\bigand}{\bigwedge}
+	\newcommand{\bigor}{\bigvee}
+	\newcommand{\true}{\m{\top}}
+	\newcommand{\false}{\m{\bot}}
+% Marc zijn versies
+	\newcommand{\Lra}{\Leftrightarrow}
+	\newcommand{\lra}{\leftrightarrow}
+	\newcommand{\Ra}{\Rightarrow}
+	\newcommand{\La}{\Leftarrow}
+	\newcommand{\ra}{\rightarrow}
+	\newcommand{\la}{\leftarrow}
+	\newcommand{\mim}{\limplies}
+	\newcommand{\equi}{\lequiv}
+	\newcommand{\Tr}{\ltrue}
+	\newcommand{\Fa}{\lfalse}
+	\newcommand{\Un}{\lunkn}
+	\newcommand{\In}{\lincon}
+	
+%Vocabularies, structures, theories
+	\newcommand{\voc}{\m{\Sigma}}
+	\newcommand{\invoc}{\m{\sigma_{in}}}
+	\newcommand{\outvoc}{\m{\sigma_{out}}}
+	\newcommand{\struct}{\m{I}}
+	\newcommand{\structx}{\m{I}}
+	\newcommand{\I}{\m{\mathcal{I}}}
+	\newcommand{\Iin}{\m{\I_{in}}}
+	\newcommand{\J}{\m{\mathcal{J}}}
+	\newcommand{\instruct}{\m{I_{in}}}
+	\newcommand{\outstruct}{\m{I_{out}}}
+	\newcommand{\theory}{\m{\mathcal{T}}}
+
+%More caligraphic characters
+	\newcommand{\PP}{\m{\mathcal{P}}}
+	\newcommand{\LL}{\m{\mathcal{L}}}
+	\newcommand{\WW}{\m{\mathcal{W}}}
+	\newcommand{\BB}{\m{\mathcal{B}}}
+
+
+%Often used abbreviations for definitions, formulas,...
+	\newcommand{\D}{\m{\Delta}}
+	\newcommand{\f}{\m{\varphi}}
+	\newcommand{\atom}{\m{a}}
+	\newcommand{\lit}{\m{l}}
+	\newcommand{\rules}{\m{R}}
+	\newcommand{\set}{\m{S}}
+	\NewDocumentCommand\inter{g+g}{%
+	  \IfNoValueTF{#1}
+	    {\struct}
+	    {\m{#1^{#2}}}}
+	\newcommand{\partinter}{\m{J}}
+	\newcommand{\model}{\m{M}}
+	\newcommand{\fone}{\m{\varphi}}
+	\newcommand{\ftwo}{\m{\psi}}
+
+%properties of definitions
+	\newcommand{\defined}[1]{\ensuremath{\mbox{\it Def}({#1})}\xspace}
+	\newcommand{\open}[1]{\ensuremath{\mbox{\it Open}({#1})}\xspace}
+	\newcommand{\pars}[1]{\ensuremath{\mbox{\it Par}({#1})}\xspace}
+	\newcommand{\just}{\m{just}}
+
+% Inferences
+	\newcommand{\mx}[3]{\m{<#1, #2, #3>}}
+
+%Vectors
+	\newcommand{\xxx}{\m{\overline{x}}}
+	\newcommand{\XXX}{\m{\overline{X}}}
+	\newcommand{\yyy}{\m{\overline{y}}}
+	\newcommand{\zzz}{\m{\overline{z}}}
+	\newcommand{\ddd}{\m{\overline{d}}}
+	\newcommand{\eee}{\m{\overline{e}}}
+	\newcommand{\ccc}{\m{\overline{c}}}
+	\newcommand{\bracketddd}{\m{\big(\overline{d}\big)}}
+	\newcommand{\bddd}{\m{\big(\overline{d}\big)}}
+	\newcommand{\DDD}{\m{\overline{D}}}
+	\newcommand{\vvv}{\m{\overline{v}}}
+	\newcommand{\ttt}{\m{\overline{t}}}
+	\newcommand{\aaa}{\m{\overline{a}}}
+	\newcommand{\bbb}{\m{\overline{b}}}
+ 	\providecommand{\lll}{\m{\overline{l}}}%sometimes, already exists
+ 	\renewcommand{\lll}{\m{\overline{l}}}
+	\newcommand{\TTT}{\m{\overline{T}}}
+
+%Set operations
+	\newcommand{\elim}{\m{\backslash}}
+	
+%Rewrite rules
+	\newcommand{\transformarrow}{\pmb{\pmb\rightarrowtail}}
+	\newcommand{\rewrite}[2]{\m{#1  \ \transformarrow\    #2 }}
+
+% Common Base types
+	\newcommand{\bool}{\m{\mathbb{B}}}
+	\newcommand{\Bool}{\bool}
+	\newcommand{\nat}{\m{\mathbb{N}}}
+	\newcommand{\Nat}{\nat}
+	\renewcommand{\int}{\m{\mathbb{Z}}}
+	\newcommand{\real}{\m{\mathbb{R}}}
+	\newcommand{\rat}{\m{\mathbb{Q}}}
+
+% Precision order
+	\newcommand{\leqp}{\m{\leq_p}}
+	\newcommand{\geqp}{\m{\geq_p}}
+	\newcommand{\leqk}{\m{\leq_k}}
+	\newcommand{\geqk}{\m{\geq_k}}
+	\newcommand{\leqt}{\m{\leq_t}}
+	\newcommand{\geqt}{\m{\geq_t}}
+	
+%Lattice operators
+	\DeclareMathOperator\glb{glb}
+	\DeclareMathOperator\lub{lub}
+	\DeclareMathOperator\lfp{lfp}
+	\DeclareMathOperator\gfp{gfp}
+
+
+%valuations
+	\newcommand{\val}{\m{\nu}}
+	\newcommand{\superval}{\m{sv}}
+	\newcommand{\kleeneval}{\m{Kl}}
+
+
+
+%other
+	\newcommand{\typed}[2]{\m{#1\in #2:}}
+	\newcommand{\hasmodel}{\mid\!\equiv}
+	\NewDocumentCommand\subs{g+g}{%
+	  \IfNoValueTF{#1}
+	    {\m{/}}
+	    {\m{#1/ #2}}}
+	\newcommand{\substitute}[2]{\subs{#1}{#2}}	
+	\newcommand{\func}[1]{\m{f(#1)}}
+	\newcommand{\setof}[1]{\m{\left \{ #1 \right \}}}
+	\newcommand{\tuple}[1]{\m{\left \langle #1 \right \rangle }}
+	\newcommand{\til}{\m{\sim}}
+	\newcommand\eqdef{\mathrel{\overset{\makebox[0pt]{\mbox{\normalfont\tiny\sffamily def}}}{=}}}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%                    Logics and systems                    %%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%General command to ensure correct spacing and text mode
+	\newcommand{\logicname}[1]{\textsc{#1}\xspace}
+
+%Systems
+	\newcommand{\idp}{\logicname{IDP}}
+	\newcommand{\xsb}{\logicname{XSB}}
+	\newcommand{\idptwo}{\logicname{IDP$^2$}}
+	\newcommand{\idpthree}{\logicname{IDP3}}
+	\newcommand{\idpfour}{\logicname{IDP4}}
+	\newcommand{\idpdraw}{\logicname{ID$^{P}_{Draw}$}}
+	\newcommand{\idpide}{\logicname{ID$^{P}_{E}$}}
+	\newcommand{\minisat}{\logicname{MiniSAT}}
+	\newcommand{\minisatid}{\logicname{MiniSAT(ID)}}
+	\newcommand{\gidl}{\logicname{GidL}}
+	\newcommand{\sts}{\logicname{SAT-to-SAT}}
+	\newcommand{\breakid}{\logicname{BreakID}}
+	\newcommand{\glucose}{\logicname{Glucose}}
+	\newcommand{\shatter}{\logicname{Shatter}}
+	\newcommand{\saucy}{\logicname{Saucy}}
+	\newcommand{\sbass}{\logicname{sbass}}
+	\newcommand{\nauty}{\logicname{nauty}}
+	\newcommand{\bliss}{\logicname{bliss}}
+	\newcommand{\gringo}{\logicname{gringo}}
+	\newcommand{\lparse}{\logicname{Lparse}}
+	\newcommand{\smodels}{\logicname{Smodels}}
+	
+
+	
+%logics
+	\newcommand{\fodotidp}{\logicname{FO(\ensuremath{\cdot})\ensuremath{^{\mathtt{IDP}}}}}
+	\newcommand{\foidp}{\fodotidp}
+	\newcommand{\fodot}{\logicname{FO(\ensuremath{\cdot})}}
+	\newcommand{\pcdot}{\logicname{PC(\ensuremath{\cdot})}}
+	\newcommand{\foid}{\logicname{FO(ID)}}
+	\newcommand{\foidaggpf}{\logicname{FO(ID,\allowbreak Agg,\allowbreak PF)}}
+	\newcommand{\foidaggpft}{\logicname{FO(ID,\allowbreak Agg,\allowbreak PF,\allowbreak T)}}
+	\newcommand{\foidplus}{\logicname{C-Log}} %DEPRECATED
+	\newcommand{\clog}{\logicname{C-Log}}
+	\newcommand{\foclog}{\logicname{FO(C)}}
+	\newcommand{\hoid}{\logicname{HO(ID)}}
+	\newcommand{\hopfid}{\logicname{HO(PF,ID)}}
+	\newcommand{\fo}{\FO}
+	\newcommand{\esoid}{\logicname{\ensuremath{\exists}SO(ID)}}
+	\newcommand{\cpl}{\logicname{CP}-logic\xspace}
+	\newcommand{\aspcore}{\text{\sc ASP-Core-2}\xspace}
+
+%acronyms. USAGE: \ouracronym{CommandName}{A}{Acronym} creates a command \CommandName such that:
+% * The first time you write it (probably the moment you define it), it reads Acronym (A)
+% * All later times you use it, it simply says A.
+% NOTE: to reset the counter, use \glsreset{<label>}
+\newcommand{\ouracronym}[3]{%
+	\newacronym{#1}{#2}{#3}
+	\expandafter\newcommand\csname #1\endcsname{\gls{#1}\xspace}%
+}
+	\ouracronym{FO}{FO}{first-order logic}
+	\ouracronym{PC}{PC}{propositional calculus}
+	\ouracronym{MX}{MX}{Model Expansion}
+	\ouracronym{MO}{MO}{Model Optimization}
+	\ouracronym{ASP}{ASP}{Answer Set Programming}
+	\ouracronym{TP}{TP}{Theorem Proving}
+	\ouracronym{LP}{LP}{Logic Programming}
+	\ouracronym{CP}{CP}{Constraint Programming}
+	\ouracronym{FP}{FP}{Functional Programming}
+	\ouracronym{KR}{KR}{Knowledge Representation}
+	\ouracronym{CSP}{CSP}{Constraint Satisfaction Problem}
+	\ouracronym{SMT}{SMT}{SAT Modulo Theories}
+	\ouracronym{KBS}{KBS}{knowledge base system}
+	\ouracronym{NNF}{NNF}{Negation Normal Form}
+	\ouracronym{FNNF}{FNNF}{Flat Negation Normal Form}
+	\ouracronym{DefNNF}{DefNNF}{Definition Negation Normal Form}
+	\ouracronym{DEFNF}{DEFNF}{Definition Normal Form}
+	\newcommand{\DEFNNF}{\DefNNF} %Was previously called like this. Keeping consistency
+	\ouracronym{CDCL}{CDCL}{Conflict-Driven Clause-Learning}
+	\ouracronym{WFS}{WFS}{Well-Founded Semantics}
+	\ouracronym{LCG}{LCG}{Lazy Clause Generation}
+	\ouracronym{AEL}{AEL}{Autoepistemic Logic}
+	\ouracronym{OEL}{OEL}{Ordered Epistemic Logic}
+	\ouracronym{AFT}{AFT}{Approximation Fixpoint Theory}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%       DEFINITIONS: commands for writing definitions      %%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   Stuff for (delayed) definitions   %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The only commands you should use explicitly are:
+%	* Environment ldef for a logical definition (should be used in mathmode)
+%	* Environment ltheo for a logical theory (starts mathmode itself)
+%	* \LRule defines a rule, usage \LRule{HEAD}{BODY}{OPTIONAL: DELAY}{OPTIONAL: CONSTRUCTION}
+% 		---> Can be used inside a ldef or an align environment
+%% USAGE EXAMPLE:
+% \begin{ltheo}
+% \lnot S(1) \\
+% \exists x\typed{D}: P(x) \\
+% \forall x\typed{D}: P(x) \limpl R(x)\\
+% \begin{ldef}
+% \LRule{\forall x\typed{D}: R(x)}{ Q(x) \lor S(x)}{delay}{construction} \\
+% \LRule{\forall x\typed{D}: R(x)}{ Q(x) \lor S(x)}{delay}{construction} \\
+% \LRule{\forall x\typed{D}: R(x)}{ Q(x) \lor S(x)}{delay}{construction} \\
+% \LRule{\forall x\typed{D}: Q(x)}{ R(x)}
+% \end{ldef}
+% \end{ltheo}
+%
+% You can use these rules in an align environment as follows:
+% \begin{align*}
+% \LRule{\forall x\typed{D}: R(x)}{ Q(x) \lor S(x)}{delay}{construction} \\
+% \LRule{\forall x\typed{D}: R(x)}{ Q(x) \lor S(x)}{delay}{construction} \\
+% \LRule{Q}{ R(x)}
+% \end{align*}
+
+	\makeatletter
+	\def\ifenv#1{
+	\def\@tempa{#1}%
+	\def\@ttempa{#1*}%
+	\ifx\@tempa\@currenvir
+	\expandafter\@firstoftwo
+	\else
+	\expandafter\@secondoftwo
+	\fi
+	}
+	\makeatother
+
+%Delayed definition rule. Usage: \ddrule{HEAD}{BODY}{DELAY}{CONSTRUCTION}
+	\newcommand{\ddrule}[4]{\ensuremath{#1 \leftarrow #2 & \{#3\} & #4}}
+%Non-delayed definition rule. Usage: \drule{HEAD}{BODY}
+	\newcommand{\drule}[2]{\ensuremath{#1 & \leftarrow & #2}}
+
+%Delayed align rule. Usage: \darule{HEAD}{BODY}{DELAY}{CONSTRUCTION}
+	\newcommand{\darule}[4]{\ensuremath{#1 \leftarrow #2 & \{#3\} & #4}}
+%Non-delayed align rule. Usage: \arule{HEAD}{BODY}
+	\newcommand{\arule}[2]{\ensuremath{#1 \, &\leftarrow \, #2}}
+
+	\newenvironment{ldef}{\left\{\begin{array}{l@{ \,}l@{\,}l}}{\end{array}\right\}}
+	\newenvironment{ltheo}{\[\begin{array}{l}}{\end{array}\]\ignorespacesafterend}
+
+	\newcommand{\LNDRule}[2]{
+	\ifenv{array}
+	{\drule{#1}{#2}}
+	{ \ifenv{align}
+		{\arule{#1}{#2}}
+		{\ifenv{align*}
+		{\arule{#1}{#2}}
+		{ERROR: using LDRule in unsupported environment: \@currenvir}
+		}
+	}
+	}
+
+	\newcommand{\LDRule}[4]{
+	\ifenv{array}
+	{\ddrule{#1}{#2}{#3}{#4}}
+	{ \ifenv{align}
+		{\darule{#1}{#2}{#3}{#4}}
+		{\ifenv{align*}
+		{\darule{#1}{#2}{#3}{#4}}
+		{ERROR: using LDRule in unsupported environment: \@currenvir}
+		}
+	}
+	}
+
+% NOTE: if getting strange errors on alignments, you probably forgot the ldef environment
+	\NewDocumentCommand\LRule{m+g+g+g}{%
+		\IfNoValueTF{#2}%
+		{#1.&}{%
+		\IfNoValueTF{#3}
+		{\LNDRule{#1}{#2.}}
+		{\LDRule{#1}{#2.}{#3}{#4}}%
+		}
+	}
+
+
+
+%FOR COMPLEX RULES: with a c above the lrule...
+
+	\NewDocumentCommand\CLRule{m+g}{%
+	\ifenv{array}
+	{\cdrule{#1}{#2}}
+	{ \ifenv{align}
+		{\carule{#1}{#2}}
+		{\ifenv{align*}
+			{\carule{#1}{#2}}
+			{ERROR: using CLRule in unsupported environment: \@currenvir}
+		}
+	}
+	}
+
+	\NewDocumentCommand\carule{m+g}{%
+		\IfNoValueTF{#2}
+			{\ensuremath{#1.}}
+			{\ensuremath{#1 \, &\cause \, #2}}}
+	\NewDocumentCommand\cdrule{m+g}{%
+		\IfNoValueTF{#2}
+			{\ensuremath{#1.}}
+			{\ensuremath{#1 & \cause & #2}}}
+	
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%            Stuff for rules for state-changes in an algorithm             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The only commands you should use explicitly are:
+%	* Environment lprop for a set of state-changing rules
+%	* \AlgoRule defines a propagation rule, usage \AlgoRule{Name}{Previous state}{New state}{Condition}
+% The whole environment is in MATH mode by default, so use hbox to obtain normal text.
+
+	\newcommand{\algrule}[4]{
+	\hbox{{#1}:}& 
+	\quad #2 ~\longrightarrow~ #3 
+	\hbox{~ if } #4\\
+	}
+
+	\newenvironment{lprop}{\[\begin{array}{ll}}{\end{array}\]}
+
+	\newcommand{\AlgoRule}[4]{
+	\ifenv{array}
+	{\algrule{#1}{#2}{#3}{#4}}
+		{ERROR: using AlgoRule in unsupported environment: \@currenvir}
+	}
+
+
+\newcommand{\commentstyle}{\color{Gray}}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%                    In-paper commentstyle                     %%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+	\newcommand{\ignore}[1]{}
+
+%Boolean to quickly disable all comments
+	\newboolean{nocomments}
+	\setboolean{nocomments}{false}
+
+%Boolean to decide whether we put our name in margin or not
+	\newboolean{commentmargin}
+	\setboolean{commentmargin}{true}
+
+%General comments
+	\newcommand{\namedcomment}[3]{%
+		\ifthenelse{\boolean{nocomments}}%
+		{}%IF no comments, write nothing
+		{%Otherwise
+			\ifthenelse{\boolean{commentmargin}}%
+				{ {\color{#3} \marginpar{\color{#3}\sc #2}#1}  }%Name in margin
+				{  {\color{#3} {\sc #2}: #1}  }%Name not in margin
+		}%
+	}
+	\newcommand{\mnamedcomment}[3]{\ifthenelse{\boolean{nocomments}}{}{{\marginpar{ \color{#3}{\sc #2}:#1}}}}
+
+	\newcommand{\namedchange}[4]{\marginpar{\color{#4}\sc #3}\textcolor{#4}{#1}\textcolor{gray}{\st{#2}}}
+
+%todo's
+	\newcommand{\todo}[1]{\namedcomment{#1}{TODO}{blue}}
+	\newcommand{\todonm}[1]{{\color{blue}\sc TODO} #1}
+	\newcommand{\mtodo}[1]{\mnamedcomment{#1}{TODO}{blue}}
+	\newcommand{\old}[1]{\namedcomment{#1}{OLD}{gray}}
+
+%Personal comments (KRR):
+	\newcommand{\bart}[1]{\namedcomment{#1}{bb}{red}}
+	\newcommand{\mbart}[1]{\mnamedcomment{#1}{bb}{red}}
+	\newcommand{\gerda}[1]{\namedcomment{#1}{gj}{orange}}
+	\newcommand{\marc}[1]{\namedcomment{#1}{md}{orange}}
+	\newcommand{\joost}[1]{\namedcomment{#1}{jv}{purple}}
+	\newcommand{\bdc}[1]{\namedcomment{#1}{bdc}{OliveGreen}}
+	\newcommand{\broes}[1]{\namedcomment{#1}{bdc}{OliveGreen}}
+	\newcommand{\mbroes}[1]{\mnamedcomment{#1}{bdc}{OliveGreen}}
+	\newcommand{\pieter}[1]{\namedcomment{#1}{pvh}{NavyBlue}}
+	\newcommand{\maurice}[1]{\namedcomment{#1}{mb}{orange}}
+	\newcommand{\ingmar}[1]{\namedcomment{#1}{id}{purple}}
+	\newcommand{\matthias}[1]{\namedcomment{#1}{mvdh}{blue}}
+	\newcommand{\mmaurice}[1]{\mnamedcomment{#1}{mb}{orange}}
+	\newcommand{\jo}[1]{ \namedcomment{#1}{jo}{Fuchsia}}
+	\newcommand{\joachim}[1]{ \namedcomment{#1}{jj}{Sepia}}
+	\newcommand{\mjoachim}[1]{ \mnamedcomment{#1}{jj}{Sepia}}
+	\newcommand{\tim}[2]{\namedcomment{#1}{tvde}{brown}}
+	\usepackage{soul}
+	\newcommand{\bartch}[2]{\namedchange{#1}{#2}{bb}{red}}
+	\newcommand{\broesch}[2]{\namedchange{#1}{#2}{bdc}{OliveGreen}}
+%Personal comments  (Collaborations):
+	\newcommand{\pjs}[1]{\namedcomment{#1}{pjs}{orange}}
+	\newcommand{\jan}[1]{\namedcomment{#1}{jvdb}{orange}}
+	\newcommand{\jvt}[1]{\namedcomment{#1}{jvt}{orange}}
+	\newcommand{\aw}[1]{\namedcomment{#1}{aw}{orange}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%                   Useful in-text commands                    %%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \newcommand{\keyword}[2]{%
+% 	\expandafter\newcommand\csname #1\endcsname{#2\xspace}%
+% 	\expandafter\newcommand\csname #1s\endcsname{#2s\xspace}%
+% 	\expandafter\newcommand\csname #1ness\endcsname{#2ness\xspace}%
+% % 	\expandafter\newcommand\MakeUppercase{\csname #1\endcsname}{#2\xspace}%
+% %	\expandafter\newcommand\csname\makefirstuc{#1}\endcsname{\makefirstuc{#2}\xspace}%
+% %	\expandafter\newcommand\csname\makefirstuc{#1}\endcsname{\makefirstuc{#2}s\xspace}%
+% }
+
+\newcommand{\superscript}[1]{\ensuremath{^{\textrm{#1}}}}
+\newcommand{\subscript}[1]{\ensuremath{_{\textrm{#1}}}}

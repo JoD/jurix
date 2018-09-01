@@ -1,0 +1,33 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%             Stuff for writing IDP source code with coloring              %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+	\usepackage[final]{listings}
+
+	\lstdefinelanguage{idp}{
+		morekeywords=[1]{query(}, %to ignore procedure calls to query
+		morekeywords=[2]{namespace,vocabulary,theory,structure,procedure,term,set,formula, spec, specification,query},
+		morekeywords=[3]{include,using,type,isa,contains,partial,extern,LFD,GFD,constructed,from,constraint,pred,supertype,of,subtype,define},
+		morekeywords=[4]{int,float,char,string,nat},
+		morekeywords=[5]{if,then,else,for,end},
+		morecomment=[s]{/*}{*/},	
+		morecomment=[l]{//}
+	}
+	\lstset{
+		language=idp,
+		tabsize=3,
+		basicstyle=\small,
+		frame=none,
+		frame=single,
+		showstringspaces=false,
+		breaklines = true,
+		alsoletter=(,
+		commentstyle=\commentstyle,
+		keywordstyle=[1],
+		keywordstyle=[2]\color{BrickRed}\bfseries,
+		keywordstyle=[3]\color{OliveGreen}\bfseries,
+		keywordstyle=[4]\color{Blue}\bfseries,
+		keywordstyle=[5]\color{Violet}\bfseries,
+		literate={~} {$\sim$}{1}
+	}
+	\newcommand{\code}[1]{\texttt{#1}}

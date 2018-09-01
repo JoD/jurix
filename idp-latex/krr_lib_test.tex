@@ -1,0 +1,12 @@
+% A file to test the whole bibliography. Just pdflatex this and bibtex the resulting aux.
+
+\documentclass{article}
+\usepackage[numbers]{natbib}         % bibliography style
+\usepackage[colorlinks]{hyperref}    % better urls in bibliography
+
+\begin{document}
+Test the complete \texttt{.bib} file: \nocite{*}.
+
+\bibliographystyle{plainnat}  % needs package natbib
+\bibliography{krrlib}
+\end{document}
