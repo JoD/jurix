@@ -14,17 +14,15 @@ A model $I$ of a theory T is an interpretation that satisfies all the sentences 
 For example, our application needs to select the appropriate tax rate to calculate the registration duty, depending on the registration type of the estate.
 The vocabulary $\Sigma$ consist of types Rate and RegistrationType; and functions ApplicableRate:Rate and IsRegistrationType:RegistrationType.
 Theory $T$ over $\Sigma$ consists of a definition of the applicable rate and the constraint that a rate should be specified:
-\begin{center}
-\[
-\{
-ApplicableRate = 10 \leftarrow IsRegistrationType = Other.
-~\\
-ApplicableRate = 1 \leftarrow IsRegistrationType = SocialDwelling.
-~\\
-ApplicableRate = 7 \leftarrow IsRegistrationType = FamilyDwelling.\}
-~\\
-\exists x : ApplicableRate = x.\]
-\end{center}
+\begin{align*}
+\{\\
+ApplicableRate = 10 \leftarrow IsRegistrationType = Other.\\
+ApplicableRate = 1 \leftarrow IsRegistrationType = SocialDwelling.\\
+ApplicableRate = 7 \leftarrow IsRegistrationType = FamilyDwelling.\\
+\}\\
+\\
+\exists x\colon ApplicableRate = x.
+\end{align*}
 The domain of Belgian registration duties is specified in the structure:\\
 \[
 Rate^I =& \{ 1,7,10\}\]~\\
