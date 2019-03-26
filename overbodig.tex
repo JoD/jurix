@@ -1,0 +1,98 @@
+
+----------
+
+%\jo{misschien gewoon altijd vanuit het perspectief van notarissen werken? E.g., "In Belgium, when a party wants to conclude a transaction on the real estate market, a notary is required to affirm the process, providing legal certificates for the requested transaction." Etc.}
+
+%As most legislation, the Belgian legislation on registration duties with the purchase of real estate is complex.
+%Although a simplification of the applicable rules took place in 2018, there still exist multiple registration types that differ in the country's different communities.
+%Moreover, as the legislation changed recently, no adequate software support for real estate buyers is available.
+%%For citizens it was difficult to know the amount of duties to be paid. 
+%%They would need to seek the advice of experts.
+%%This could often give an indication of the due amount.
+%%owever, to be sure the notary would need to perform a thorough investigation, hence taking up precious time in the bargaining process when purchasing a house.
+%Because of the magnitude of the legislation, the multiple exceptions, and the variety of definitions for some concepts, the risk of mistakes and omissions is considerable, even for trained experts like notaries.
+%%Even after the simplification of the applicable law in 2018, this remains the case.
+
+%At the same time, many notaries operate in the old school way, using paper-printed questionnaires to gather information.
+%E.g., these questionnaires inquire about the contract date of previous purchases or sales, or the ownership share of previously owned real estate.
+%However, it is easy to miss a question, and not all inquired information is relevant to a specific real estate transaction.
+
+%These difficulties lead us to develop software to support the notary in decision making and information gathering.
+
+In Belgium, when a party wants to conclude a transaction on the real estate market, a notary is required to affirm the process, providing legal certificates for the requested transaction.
+This registration gives rise to the payment of registration rights, that amount to 10\% or 12\%, depending on the community in which the estate is situated.
+The standard tax rate can be reduced for certain cases, which leads to a range of possible tax rates with their associated conditions. 
+Because of the magnitude of the legislation, the multiple exceptions, and the variety of definitions for some concepts, the risk of mistakes and omissions is considerable.
+%At the same time, the way of working of many notaries is of the old school, using bulky paper-printed questionnaires.
+%These contain among other questions on the contract date , ownership share and acquisition method of previously owned real estate. 
+%Some questions are cryptically formulated and/or require attestations, even though they might be irrelevant in the further processing of the registration.
+
+Moreover, the legal domain is subject to frequent modifications, as demonstrated by a major revision of registration rights mid 2018.
+Therefore the application presented in this paper aims to support and smooth the decision process concerning the selection of the correct registration rights applicable to the real estate transaction in a sustainable way.
+A first version of the application was developed in the beginning of 2018, with the previous legislation still in force \cite{Marjolein}.
+At the time, the application requirements from the notary were rather vague, and we opted to use the existing Interactive Decision Enactment System (IDES) from \cite{Ingmar}.
+The evaluation of the first system led to more advanced requirements concerning both the interface and the enactment possibilities of the system.
+At the same time the far-reaching amendment of the legislation provides a unique case to test and demonstrate the assertion that declarative systems are easy to amend. 
+The result is the an IDES for Belgian registration rights for which currently no other application exists, and it is proven to be sustainable to deal with future law amendments.
+
+
+
+The calculation of relevance is based on well-known justification theory (e.g.; \cite{Denecker93, Denecker2015}.
+The direct justification of a literal gives a reason why this literal is true.
+%Definition : For a domain literal $p$ \in $defs(\Delta)$ and s set $Jd$ of literals $l$ is a direct justification of a domain literal $p$
+%Consider the literals l1 \ldots ln, p with $p$ \in $defs(\Delta)$ and defined by $p \leftarrow l1 \odot  \ldots  \odot ln$.  
+Consider the literals $l$, $l_1$,.., $l_n$ and $p$ with $p=l$ or $p=\neg l$.\jo{Wat bedoel je met "$p=l$"? Je probeert ergens de notie van positieve of negatieve relevantie weer te geven?} \Marjolein{ja klopt} \jo{Misschien moeten wij het niet zo complex maken, aangezien de gui dit niet doet: een literal is relevant indien hij positief of negatief relevant is.}
+\Marjolein{ok}
+\jo{ook: waarom met literals werken en niet met atomen?}
+\Marjolein{naar analogie met de paper over relevance.  Maar misschien beter dus met atomen}
+A set of literals $Jd$ is a direct justification of $p = l$:
+if $p \leftarrow \neg l_1 \wedge \ldots \wedge l_n$ then $p = true$ if $Jd = \{l_1, \ldots ,l_n\}$;
+if $p \leftarrow \neg l_1 \vee \ldots \vee l_n$ then $p=l$ if $Jd = \{l_i\}$ for some $i$.
+A set of literals $Jd$ is a direct justification of $\neg p = l$:
+if $p \leftarrow \neg l_1 \wedge \ldots \wedge l_n$ then $\neg p = l$ if $Jd = \{~l_i\}$ for some $i$;  
+if $p \leftarrow \neg l_1 \vee \ldots \vee l_n$ then $\neg p = l$ if $Jd = \{\neg J_1,  \ldots , \neg J_n\}$.
+A total justification $J$ for a literal $p$ contains its direct justifications and the direct justifications of the subsequent direct justifications.\jo{dus maar twee niveaus diep? Nee he, dit loopt door tot aan de opens, hoe diep ze ook zitten :)} \Marjolein{inderdaad, daarvan ben ik me bewust.  Is het zo beter verwoord of moet het nog duidelijker?}
+A path $\Pi$ is a sequence of direct justifications from the root to the bottom, i.e. to the point where the direct justification contains only parameter base literals.
+For a given literal $p$ from theory $T$ multiple justification paths may be constructed.
+They can be characterized by their truth order $f <_t u <_t t$ and their precision order  $u<_p f$ and $u<_p t$.
+%A literal is irrelevant for $P$t if its value does not affect any justification for $Pt$\ref{Jansen2016}.
+Instead of searching for a total interpretation $I$ of $T:\Sigma$ such that $I \models T$, the inference of relevance searches for a partial interpretation $I$ and a justification $J$ that justifies $p_T$ in $I$ \cite{Jansen2016}.
+\begin{definition}
+\label{def1}
+\cite{Jansen2016}
+Given a PC(ID) theory $T = \{p_T , \Delta \}$ and a partial interpretation $\Iota$, we define the set of relevant literals, denoted $R_T(I)$ as follows:
+\begin{itemize}
+    \item $p_T$ is relevant if $p_T$ is not justified,
+    \item if $l \in R_T(I)$, $(l,l') \in dd_\Delta$ and $l'$ is not justified, then $l'$ is relevant.
+\end{itemize}
+\end{definition}
+\jo{Moedige poging Marjolein, maar het ontbreekt aan structuur en duidelijkheid. Wat probeer je te definieren? Wat zijn de gegeven parameters van je definitie? Wat zijn de voorwaarden die onder de mogelijke configuraties van het gegevene een object vormen dat voldoet aan de definitie?}
+\jo{Ik werk het later, maar je zag dit als een oefening. Het is je nog niet gelukt.}
+
+
+op te nemen in de conclusie:
+- onze applicatie lost een praktijkprobleem op:
+* zorgt ervoor dat enkel relevante info opgevraagd wordt
+* notaris kan zeker zijn dat alle mogelijke kortingen gechecked worden
+* tegelijk makkelijk in gebruik en weinig intrusief in bespreking met klanten
+
+- demonstratie van relevantie in een praktijkcase
+* werkt dit in praktijk even goed als wat we intuitief zouden verwachten?
+
+- afzonderen van beslissingslogica in kennisbank werkt:
+* snelle aanpassing van de logica bij veranderende regels
+* geen extra inspanning om interface te gebruiken
+* ontwikkeling van interface onafhankelijk van domeinprobleem dat beschreven is in de code.
+
+\begin{example}
+Consider the theory from example \ref{ex:explanation} and an  interpretation $I_{rel}$ that contains the assigned value for $Purpose$ and the propagated value for $socialDwelling$:
+\begin{align*}
+    &Purpose = socialHabitation \mapsto \false
+    &HasRegistrationType=socialDwelling \mapsto \false
+\end{align*}
+$I$ is closed under propagation with $T$, but there still exists an expansion of $I$ to a model of $T$.
+Now, the output of the relevance inference with $T$ and $I$ as input will not contain the atom $Seller=licensedSeller$, as it could only be reached from the constraint $\exists x \colon HasRegistrationType = x$ through the node $HasRegistrationType = socialDwelling$, which is justified as $Purpose = socialHabitation\mapsto false$ is an open, assigned value in $T$'s dependency graph.
+In other words, whether the seller of the estate is a licensed seller, is not relevant, and it is not needed to fix the value of the corresponding atom.
+
+Similarly, if the registration type is not a social dwelling or a family dwelling, the registration type must be ``other'', satisfying the unique constraint, and making any further unassigned atoms irrelevant.
+\end{example}

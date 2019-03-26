@@ -1,0 +1,31 @@
+\section{Case study}
+\label{case}
+In Belgium, when a party wants to conclude a transaction on the real estate
+market, a notary is required to affirm the process, providing legal certificates for
+the requested transaction. This registration gives rise to the payment of registration duties, which depend on the region in which the estate is situated. 
+The standard tax rate can be reduced for certain registration types, which leads to a range of possible tax rates with their associated conditions.\footnote{For the Flemish region the applicable legislation is the "Decreet van 13 december 2013 houdende de Vlaamse codex fiscaliteit" with amending decrees from December 19th 2014 and May 18th 2018.}
+
+Prior to June 1st 2018, most family houses would either be subject to the standard duty of 10\%, or to a reduced duty of 5\% for ``modest houses''. 
+Whether a house would classify as modest depended mainly on its \textit{kadastral income (KI)}, a value which represents its theoretical rental value. 
+%Only for some houses this value got reviewed to current standards. 
+This KI was then compared to a threshold, that depended on the buyer's number of children.
+In addition, there also existed an independent and elaborate system of \textit{abattements} (reductions on the taxable base of the house). %\cite{oudewet}.
+
+To remedy the complexity of this system, new and simplified legislation came into force.  
+The concepts of \textit{KI} and \textit{abattement} were abandoned. 
+To determine if a house should be considered ``modest'',  its actual selling price is now used instead of the fictitious \textit{KI}.
+%For such modest houses, a fixed discount replaces the\textit{ abattement}.
+These reforms of the registration duties represent a profound change: of the original 42 law articles of chapter 9 concerning the registration law, the decree of 18 May 2018 abolishes 4 articles, modifies 9 and adds 5 of them.% \cite{newlaw}.
+
+Our prototype of \cite{ruleml/DeryckHVV18} employs a knowledge base for the original legislation. Its functionality focuses on two requirements:
+\begin{compactitem}
+\item \emph{Completeness and correctness:} The application should ensure that all possible discounts are taken into account, and only rule out or apply discounts when warranted by the information provided by the notary. 
+
+\item \emph{Usability:}  In meetings between notaries and their clients, the technology should not disturb the confidential atmosphere.  A lot of typing and searching for the correct button is out of the question. 
+\end{compactitem}
+
+After evaluating this prototype, the notary office came up with these additional requirements:
+\begin{compactitem}
+\item \emph{Traceability}  The decision outcomes calculated by the application should be easy to check and explain,  in order to increase clients' confidence in the application.  
+\item \emph{Efficient information gathering}  Only questions relevant to possible discounts should be asked. E.g., as soon as it is clear that one of the discounts cannot be used, questions related to this discount become irrelevant and should no longer be asked.
+\end{compactitem}

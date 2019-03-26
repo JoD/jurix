@@ -1,0 +1,120 @@
+% PLEASE USE THIS FILE AS A TEMPLATE FOR THE PUBLICATION 
+% Check file IOS-Book-Article.tex
+%
+
+\documentclass[conference]{IEEEtran}
+     %[seceqn,secfloat,secthm]
+
+
+    %usepackage{mathptmx}
+    %usepackage[T1]{fontenc}
+\usepackage{times}%
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{comment}
+\newcommand{\ci}{\mathcal{I}}
+\usepackage{paralist}
+%
+%%%%%%%%%%% Put your definitions here
+\input{idp-latex/idp-latex}
+
+%%%%%%%%%%% End of definitions
+
+\begin{document}
+%\newcommand{\Iota}{I}
+%newcommand{\Marjolein}[1]{ namedcomment{#1}{Marjolein}{OliveGreen}}
+%\newcommand{\jve}[1]{ \namedcomment{#1}{Joost}{blue}}
+%\renewcommand{\true}{\mathbf{t}}
+%\renewcommand{\false}{\mathbf{f}}
+%\newcommand{\unknown}{\mathbf{u}}
+%\newcommand{\ides}{IDES}
+
+%\begin{frontmatter}          % The preamble begins here.
+%
+%\pretitle{}
+\title{Legislation in the knowledge base paradigm: interactive decision enactment for registration duties}
+%\runningtitle{}
+%\subtitle{}
+
+% For one author:
+%\author{\fnms{} \snm{}}
+%\address{}
+%\runningauthor{}
+%
+% Two or more authors:
+\author{\IEEEauthorblockN{Marjolein Deryck\IEEEauthorrefmark{1},
+Jo Devriendt\IEEEauthorrefmark{2},
+Simon Marynissen\IEEEauthorrefmark{3} 
+and
+Joost Vennekens\IEEEauthorrefmark{1}}
+\IEEEauthorblockA{\IEEEauthorrefmark{1}Department of Computer Science, KU Leuven Campus De Nayer, Sint-Katelijne-Waver, Belgium\\
+Email: firstname.lastname@kuleuven.be}
+\IEEEauthorblockA{\IEEEauthorrefmark{2}KTH Royal Institute of Technology,
+Stockholm, Sweden\\
+Email: jhmde@kth.se}
+\IEEEauthorblockA{\IEEEauthorrefmark{3}Department of Computer Science, KU Leuven, Leuven, Belgium\\
+Email: simon.marynissen@kuleuven.be}
+}
+%\author{
+%\IEEEauthorblockN{Marjolein Deryck}
+%\IEEEauthorblockA{Department of Computer Science, KU Leuven\\ Campus De Nayer, Sint-Katelijne-Waver, Belgium\\
+%Email: marjolein.deryck@kuleuven.be}
+%\and
+%\IEEEauthorblockN{Jo Devriendt}
+%\IEEEauthorblockA{KTH Royal Institute of Technology\\
+%Stockholm, Sweden\\
+%Email: jhmde@kth.se
+%}
+%\and
+%\IEEEauthorblockN{Simon Marynissen}
+%\IEEEauthorblockA{Department of Computer Science, KU Leuven\\
+%Leuven, Belgium\\
+%Email: simon.marynissen@kuleuven.be}
+%\and
+%\IEEEauthorblockN{Joost Vennekens}
+%\IEEEauthorblockA{Department of Computer Science, KU Leuven\\
+%Campus De Nayer, Sint-Katelijne-Waver, Belgium\\
+%joost.vennekens@kuleuven.be
+%}}
+%
+\maketitle
+
+\begin{abstract}
+%The Knowledge Base Paradigm advocates the accumulation of domain knowledge in a formal knowledge base to enable its use for multiple applications.
+%This approach induces flexibility and agility, as changes in the domain are reflected directly in the knowledge base, without affecting the algorithms that use the information in the knowledge base.
+%Similarly, new ways to use this information can be developed independently of the specific domain and are highly portable.
+%This paper demonstrates these characteristics with the case of Belgian registration rights, by modelling it in the \idp knowledge base system.
+%The concerned legislation changed considerably mid 2018.  
+%Models for the former and current legislation are developed with the knowledge base system \idp.
+%The modelled specifications are supplied to a generic graphical user interface, which interactively supports a user to comply with registration right law.
+%The resulting interactive decision enactment system derives consequences of user input and signals which unspecified parameters are still relevant under the given input.
+Recently, a prototype for an interactive decision enactment system for notaries was developed. This prototype follows the Knowledge Base Paradigm (KBP): it consists of purely declarative domain knowledge, to which various logical inference methods can be applied. This paper extends that work in two ways. First, we experimentally  validate the claim that the KBP leads to highly maintainable software.
+%, by adapting the prototype to a recent overhaul of the relevant legislation. 
+Second, we extend the number of additional logical inferences, which allows us to address a number of usability concerns. This provides further evidence for the claim that the KBP is indeed a viable method of developing interactive software systems. The resulting interactive decision enactment prototype is a fully generic system, that can be applied to other domains with minimal effort.
+\end{abstract}
+
+
+%\begin{keyword}
+%Knowledge Representation, Configuration, Decision Support
+%\end{keyword}
+
+%\end{frontmatter}
+
+%%%%%%%%%%% The article body starts:
+
+
+\input{01_Intro}
+%\input{02_Case.tex}
+\input{case_extended.tex}
+\input{03_KBP}
+%\input{04_Original.tex}
+%\input{05_Legislation.tex}
+\input{06_Interface.tex}
+\input{07_Related.tex}
+\input{08_Conclusion.tex}
+\input{09_Acknowledgements.tex}
+
+\bibliographystyle{plain} %{splncs}
+{\footnotesize
+\bibliography{lib,idp-latex/krrlib}}
+\end{document}

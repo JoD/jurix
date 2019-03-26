@@ -1,0 +1,36 @@
+\section{Related Work}
+\label{related}
+We are not the first to model legislation into a logic-based language.
+In the United Kingdom, several pieces of legislation were represented as executable logic programs \cite{cacm/SergotSKKHC86, icail/Bench-CaponRRS87}.
+%For instance, the British Nationality Act  and a large part of the Supplementary Benefit Legislation \cite{icail/Bench-CaponRRS87} were modelled in Prolog.
+Later, a shift from logic programs to description logic knowledge bases occurred \cite{valente1995legal, ijmms/KralingenVBH99}. %Early examples include Valente's functional ontologies \cite{valente1995legal} and Van Kralingen's frame-based ontologies \cite{ijmms/KralingenVBH99}.
+These are simpler, decidable logics for which the decision procedures are tractable for a machine.
+However, this also comes at a cost: by limiting complexity, expressivity is often limited as well. Hence, to express a complex legal statement, auxiliary symbols will often be required.
+In the extreme case, it might not even be possible to express certain laws.
+
+Nevertheless, there have been European projects that model legislation into description logic knowledge bases~\cite{HARNESS}.
+%, and its successors \cite{AGILE, jurix/ForheczKMS09}.
+Alongside them, XML standards were developed to express such description logic knowledge bases~\cite{lncs/BoerWV08, icail/PalmiraniCV09}.
+%Examples include the Legal Knowledge Interchange Format (LKIF) \cite{lncs/BoerWV08}, Akoma Ntoso \cite{BarabucciCPPV09}, and the Legal Metadata Interchange Format (LMIF) \cite{icail/PalmiraniCV09}.
+
+All research above is focused on a single kind of reasoning (deductive reasoning or satisfiability checking), whereas our approach is multi-inferential by construction. This multi-inferential nature allows us to perform different reasoning tasks all with the same modeled legislation, which is crucial for an interactive decision enactment system.
+
+Regarding the formalization of the legal domain, some interesting suggestions regarding the use of an intermediate model between the knowledge domain and the final knowledge base have been done by \cite{Bench-Capon1992} and \cite{ijmms/KralingenVBH99}.
+\begin{comment}
+The purpose of this intermediate model is to ensure a thorough analysis of the domain, independent of the implementation goal.
+Although we share this concern, we see an additional role for the intermediate model, i.e., to facilitate communication between the domain expert and the modeller.
+Therefore we prefer to use the DMN-based tool OpenRules.
+
+
+
+
+The use of the DMN-based tool of OpenRules, allows to define concepts and attributes in a business glossary, while rules are formalized in decision tables.
+These parts are analog to the \textit{class hierarchy} and \textit{rule base} parts suggested by \cite{Bench-Capon1992}.
+Especially in \cite{Bench-Capon1992}, the importance of an analog structure of the knowledge base and legislation, what they refer to as \textit{isomorphism}, is stressed.
+While our program shows some isomorph characteristics %(build on a single legal source, theory represents only the legal source, structure of the articles is partly reflected in the definition)
+, we sometimes deviate from the principle.
+For example, subsection 2 contains a number of articles that each describe a separate registration type with its applicable tax rate. 
+In the knowledge base of our application, the registration type is defined in one definition (with each rule referring to a separate article).
+The tax rate however, is defined in a separate definition (referring to the same articles).
+The dogmatic use of isomorphism seems less relevant in the limited scope of our application and with the implemented features of explanation and relevance.
+\end{comment}

@@ -1,0 +1,323 @@
+
+\section{The knowledge base paradigm and \idp}
+\label{KBP}
+
+%Our approach to develop a decision support system is rooted in the \emph{knowledge base (KB) paradigm}, which asserts that knowledge should be independent of computation. As a consequence, one can build software by formally specifying the knowledge of the problem domain (the \emph{knowledge base}), and use problem-domain agnostic operations (called \emph{inferences}) on knowledge base objects to perform the necessary calculations \cite{iclp/DeneckerV08}. \jo{add citation}
+
+%\subsection{\fodot}
+
+The prototype uses the \idp knowledge base system, which employs \fodot as a formal knowledge base specification language~\mycite{IDP}. The core of \fodot is typed first-order logic, extended with inductive definitions, aggregates and arithmetics~\mycite{IDP}. 
+In this section, we only recall a propositional fragment of the language, applied to the notary application.
+
+In our restricted fragment, we assume a set of constants $c$ which each have an associated domain $dom(c)$ of possible values $\{v_1,\ldots,v_n\}$. As a running example, we use the selection of an appropriate rate for the calculation of the registration fee. Here, we have a constant $ApplicableRate$ with domain $\{1,7,10\}$, and a constant $RegistrationType$ with domain $\{Social, Modest, Other\}$. 
+
+A \emph{partial interpretation} $\ci$ assigns to each constant $c$ a non-empty subset $c^\ci$ of values from its domain. A \emph{total interpretation} $I$ assigns to each constant $c$ a single value $c^I$ from its domain. Partial interpretations can be ordered according to their precision: $\ci \leq_p \ci'$ if for each $c$, $c^\ci \supseteq c^{\ci'}$. Total interpretations correspond to precision-maximal partial interpretations.
+We say that a total $I$ is an \emph{expansion} of $\ci$ if for each $c$, $c^I \in c^\ci$.
+\begin{comment}
+
+As an example, the total interpretation
+\[
+I_{ex} = \{ ApplicableRate=1, RegistrationType=Social\}
+\]
+is an expansion of the partial
+\begin{align*}
+\ci_{ex} = \{ & ApplicableRate\in\{1,7\}, \\
+& RegistrationType\in\{Social,Modest,Other\}\}
+\end{align*} and also of the least precise partial interpretation $\ci_{ex}^\bot$ that assigns $dom(c)$ to all $c$.
+\end{comment}
+
+An \emph{atom} is an expression of the form $c = v$ where $v \in dom(c)$.  Atoms can be combined into \emph{formulas} by means of the Boolean operators $\lnot,\lor$ and $\land$. 
+%A \emph{literal} is either an atom $c = v$ or its negation $\lnot (c = v)$, which we also write as $c\neq v$. 
+A \emph{theory} consists of a set of constraints and definitions. A \emph{constraint} is simply a formula. A \emph{definition} is a set of \emph{rules} of the form $A \leftarrow \varphi$ where $A$ is an atom and $\varphi$ a formula. Essentially, such a rule states that $\varphi$ implies $A$ and that, in addition, $A$ may only hold if at least one of the rules of the definition implies it (see also \cite{KR/DeneckerV14}).
+%\jo{ref missing? or intensionally removed?}). 
+%The formal and informal semantics of rule-based definitions were discussed at length in .
+
+%\\
+%    & ApplicableRate: Rate \\
+%    & HasRegistrationType: RegistrationType
+%\end{align*}
+%The ``constructed from'' statement in the declaration of $RegistrationType$ has the effect of declaring three additional constants of this type. In addition, it also states that these three constants are precisely the three $RegistrationType$s that exist.
+
+ %Second, a \emph{structure} for a vocabulary assigns a value to all of the types and some (but not necessarily all) of the constants. The interpretation of a type is a set of domain elements; that of a constant is a single domain element from the interpretation of the constant's type. 
+ %For the vocabulary $\Sigma_{ex}$, we consider the structure $I_{ex}$: 
+%\begin{align*}
+%& Rate^{I_{ex}} = \{ 1,7,10\} \\
+%& RegistrationType^{I_{ex}} = \{Social, Family, Other\}\footnote{IDP would not require this interpretation of the $RegistrationType$ to be explicitly given, since this is already implied by the ``constructed
+%from'' statement in the vocabulary. }\\
+%& HasRegistrationType^{I_{ex}} = Social
+%\end{align*}
+%Note that $I_{ex}$ interprets only the types and one of the two constants, but not the other. A structure is called \emph{totatl} if it  assigna a value to all constants in its vocabulary and \emph{partial} otherwise. We can expand the partial structure $I_{ex}$ into a \emph{total} structure $I'_{ex}$ by adding, e.g., the interpretation $ApplicableRate = 1$.
+
+%A \emph{theory} over a vocabulary consists of \emph{constraints} and \emph{definitions}. These are both built out of \emph{atoms}, i.e., expressions of the form $c_1 = c_2$ where $c_1$ and $c_2$ are two constants. Atoms can be combined into formulas by means of the boolean operators $\lnot,\lor$ and $\land$. A constraint is simply a formula. A definition is a set of \emph{rules} of the form $A \leftarrow \varphi$ where $A$ is an atom and $\varphi$ a formula. Essentially, such a rule states that $\varphi$ implies $A$ and that, in addition, $A$ may only hold if at least one of the rules of the definition implies it in this way. The formal and informal semantics of these rule-based definitions were discussed at length in \jo{cite}.
+
+Continuing the example, the theory $T_{ex}$ consists of the following single definition:
+\[\left\{
+\begin{aligned}
+& ~ ApplicableRate = 1 \leftarrow RegistrationType = Social. \\
+& ~ ApplicableRate = 7 \leftarrow RegistrationType = Modest. \\
+& ~ ApplicableRate = 10 \leftarrow RegistrationType = Other. 
+%& \exists x\colon ApplicableRate = x.
+\end{aligned}\right\}\]
+
+Partial interpretations evaluate formulas %(and by extension atoms, constraints, definitions, theories) 
+with a three-valued truth value in the natural way.  A partial interpretation $\ci$ \emph{satisfies} a formula $\varphi$ if it evaluates the formula to true, written as $\ci \models \varphi$.
+For atoms in particular, $\ci$ evaluates $a=v$ to true if $a^\ci=\{v\}$, to false if $v \not \in a^\ci$, and to unknown otherwise. 
+%We say $a=v$ \emph{holds} in $\ci$ if $\ci \models a=v$, and \emph{does not hold} if $\ci \models \neg(a=v)$.
+
+A total interpretation $I$ that satisfies all of the constraints and definitions in a theory $T$ is called a \emph{model} of the theory
+%, which is denoted as $I \models T$. 
+The above example $T_{ex}$ has three models, namely one for each possible $ApplicableRate$.
+\begin{comment}
+
+
+\begin{align*}
+& \{ApplicableRate = 7, RegistrationType = Modest\}\text{,}\\
+& \{ApplicableRate = 10, RegistrationType = Other\}\text{ and }\\ 
+& I_{ex}\text{.}
+\end{align*}
+\end{comment}
+\begin{comment}
+%$T_{ex}$ contains a definition of the applicable rate, which depends on the registration type at hand, and the constraint that a rate should be specified.
+
+    %The domain is a finite set of values called \emph{domain elements}.
+    %The types can be seen as sets, the predicate symbols as references to mathematical relations, and the function symbols as references to function symbols. A vocabulary arranges symbols for useful concepts from a problem domain.
+    \item 
+    \begin{itemize}
+        \item A \emph{constraint} is a logical formula constructed from the vocabulary symbols, domain elements, and well-known logical symbols ($\wedge, \vee, \neg, \Rightarrow, \Leftrightarrow, \forall,\exists$), including equality ($=$) and arithmetic operations over the integers ($+, -, *, /$). Constraints represent requirements that must hold in the given problem domain. 
+        %E.g., the constraint \[\forall x\colon P(x) \Rightarrow F(x)=3\] forces all elements of the unary relation $P$ to have image $3$ under the function  $F$.
+        \item A \emph{definition} is a set of \emph{rules} \Marjolein{add: that forms a necessary condition (i.e., at least one of the rules need to apply), while at the same time each rule represents a necessary condition for the defined to hold.}
+        It is constructed using the $\leftarrow$ symbol, that serves to define a symbol in terms of some logical formula. 
+        %E.g., the following definition consists of a single rule:
+        %\[\{ \forall x\colon P(x) \leftarrow \exists y\colon F(y)=x. \}\]
+        %It defines $P$ as $F$'s image. 
+        The formal and informal semantics of these rule-based definitions were discussed at length in \jo{cite}.   %Rules can be seen as rules from the Prolog logic programming language \jo{citation}, and definitions allow to specify intermediary concepts unambiguously.
+    \end{itemize}
+    \item A \emph{structure} over the specified vocabulary, which contains a (partial) \emph{interpretation} to the types, predicate symbols and function symbols of the vocabulary. 
+    As usual, the interpretation of a type is a set of domain elements, that of a predicate symbol is a relation over the predicate's type signature, and that of a function symbol is a function satisfying the function symbol's type signature. 
+    A structure must always interpret all of the types, and may optionally interpret some or all of the predicate and function symbols.
+%\end{itemize}
+%\jo{Misschien is het beter om enkel over constantes en 0-aire predikaatsymbolen te spreken. Dat zou bvb de uitleg rond relevantie vereenvoudigen. Bvb:}
+For the remainder of this paper, we are going to assume only nullary type signatures. I.e., predicate symbols will be propositional and interpreted by true or false, while function symbols will be constants and interpreted by single domain elements.
+
+\begin{example}
+\label{ex:voctheostruct}
+
+
+%We construct a vocabulary $\Sigma_{ex}$ consisting of types $Rate$ and $RegistrationType$, and of constants (i.e., function symbols of arity $0$) $ApplicableRate$ of type $Rate$ and $HasRegistrationType$ of type $RegistrationType$, and three constants $Other$, $SocialDwelling$ and $FamilyDwelling$ also of type $RegistrationType$ . 
+
+We construct a theory $T_{ex}$:
+\begin{align*}
+& \{ \\
+& ~ ApplicableRate = 1 \leftarrow HasRegistrationType = socialDwelling. \\
+& ~ ApplicableRate = 7 \leftarrow HasRegistrationType = familyDwelling. \\
+& ~ ApplicableRate = 10 \leftarrow HasRegistrationType = other. \\
+& \} \\
+& \exists x\colon ApplicableRate = x.
+\end{align*}
+$T_{ex}$ contains a definition of the applicable rate, which depends on the registration type at hand, and the constraint that a rate should be specified.
+(We include the constraint purely for illustrative purposes. Since each constant must always have a value, it is actually superfluous.)\jve{Een ander voorbeeld van een constraint zou wellicht beter zijn.}
+\jo{Het is niet puur overbodig: het dient om relevantie af te dwingen. In de huidige modellering zijn er (denk ik) geen andere constraints die de relevantie base case triggeren.}
+\Marjolein{Ik heb idd erg veel gewerkt met definities, en minder met constraints. 
+Mss is 1 van deze bruikbaar:\\
+$IsGemeente = andereGemeente \iff ~Kernstad.\\
+IsGemeente ~= andereGemeente \iff Kernstad.\\
+Kernstad \Rightarrow ToegelatenGrondslag = 220.\\
+\urcorner Kernstad \Rightarrow ToegelatenGrondslag = 200.$\\
+Of anders kan mss een constraint ter illustratie opgemaakt worden:\\
+	$HasRegistrationType = other \iff HasRegistrationType \neq
+	socialDwelling \vee HasRegistrationType \neq familyDwelling$}
+\jo{Ja, dat zijn eigenlijk twee definities die ook beter zo gemodelleerd worden:
+\begin{align*}
+& Kernstad \leftarrow IsGemeente \neq andereGemeente. \\
+& ToegelatenGrondslag = 220 \leftarrow Kernstad. \\
+& ToegelatenGrondslag = 200 \leftarrow \neg Kernstad.
+\end{align*}
+Ik heb dit vroeger al eens aangehaald denk ik.
+}
+\Marjolein{ja, weet ik.  Maar ik heb geen andere zinvolle constraints voorhanden.}
+
+\jo{Hmm, Other, SocialDwelling en FamilyDwelling are actually domain elements (as they are elements from a constructed type). But they also are constant symbols. And "1", "7", "10" have the same problem. In this paper, I'm going to allow domain elements in the theory. This seems the most simple approach?}
+\jo{Alternatively, we can require the domain to be explicitly stated in the vocabulary, and allow a theory to use those domain elements. This does not introduce a dependency between theory and structure (which currently contains the domain)}
+\Marjolein{in the second approach, you can demonstrate the dependency between theory and structure by delineating the domain of the Rate in the structure.  In the executable code the registration type is a constructed from type, and the rate isa nat, with the available percentages specified in the structure.}
+%Finally, we construct a structure $I_{ex}$ which interprets the types and three of the five constants:
+%\begin{align*}
+%& Rate^{I_{ex}} = \{ 1,7,10\} \\
+%& RegistrationType^I = \{other,socialDwelling,familyDwelling\}\\
+%& Other^{I_{ex}} = other\\
+%& SocialDwelling^{I_{ex}} = socialDwelling\\
+%& FamilyDwelling^{I_{ex}} = familyDwelling
+%\end{align*}
+%(Note that the three $RegistrationType$ constants are interpreted by the three corresponding elements of this type. IDP also offers a more concise syntax for this, which we will not discuss.)
+\end{example}
+
+Before we move on to inferences, a crucial notion is that of an \emph{atom}.\footnote{Our notion of atom actually corresponds to the notion of \emph{domain atom} in classical logic.} 
+\begin{definition}
+Let $\Sigma$ be a vocabulary and $d_{\ldots}$ be domain elements in $\Sigma$'s domain. An \emph{atom} is a formula of the form $P(d_1,\ldots,d_n)$ with predicate symbol $P \in \Sigma$ with type signature $P\subseteq S_1 \times \ldots \times S_n$, or a formula of the form $F(d_1,\ldots,d_n)=d_0$ with function symbol $F\in \Sigma$ with type signature $F\colon S_1 \times \ldots \times S_n \rightarrow S_0$.
+\end{definition}
+Interpretations to predicate and function symbols from a vocabulary $\Sigma$ can be represented by a set of three-valued truth assignments to atoms over $\Sigma$.
+We denote such a three-valued truth assignment to an atom $a$ as $a\mapsto v$, with $v \in \{\true, \false, \unknown\}$.
+
+\begin{example}
+The structure $I$
+\begin{align*}
+Rate^I = \{ & 1,7,10\} \\
+RegistrationType^I = \{ & socialDwelling,familyDwelling,other\} \\
+atoms_I = \{ & HasRegistration=socialDwelling \mapsto \unknown, \\
+& HasRegistration=familyDwelling \mapsto \unknown, \\
+& HasRegistration=other \mapsto \unknown, \\
+& ApplicableRate=1 \mapsto \true, \\
+& ApplicableRate=7 \mapsto \false, \\
+& ApplicableRate=10 \mapsto \false\}
+\end{align*}
+interprets the constant $ApplicableRate$ by domain element $1$, and does not interpret the constant $HasRegistration$.
+\end{example}
+Note that we omit atoms that do not satisfy a predicate or function symbol's type signature, as these are considered to be always false.
+Also, for brevity's sake, we will omit unknown atoms (those mapping to $\unknown$) for the remainder of this paper, as these can be trivially derived from the true and false atoms.
+\end{comment}
+
+%\subsection{Inferences}
+
+\idp allows generic \emph{inferences} to be applied to an \fodot specification.
+\begin{comment}
+A fundamental inference is \emph{model expansion}, which, given a theory $T$, expands a partial interpretation $\ci$ into a model of $T$. In the case of the above example, $I_{ex}$ is a model expansion of $\ci_{ex}$ w.r.t.~$T_{ex}$. In general, a given pair $(\ci,T)$ may have zero, one, or more model expansions.
+\end{comment}
+The \emph{optimisation} inference takes as input a partial interpretation $\ci$, a theory $T$ and an objective integer constant $O$. It then computes the model expansion of $\ci$ w.r.t.~$T$ that is maximal (or minimal) under $O$. 
+%For instance, $I_{ex}$ is the model expansion of $\ci_{ex}^\bot$ that minimizes the objective constant $ApplicableRate$ w.r.t.~$T_{ex}$. %\jo{These examples were lost in the shortening. Either put them back or remove the references to them.}
+
+%More formally, a structure $I$ is a \emph{model} of a theory $T$ ($I \models T$) if $I$ interprets all type, predicate and function symbols in $T$'s vocabulary, and $I$ satisfies all constraints and definitions in $T$.
+%Model expansion then takes a (partial) structure over $T$'s vocabulary, and fills in the missing interpretations in such a way that the expanded structure is a model of $T$, or it reports that no such model exists.
+
+%if $I$ interprets all symbols of a subvocabulary $\Sigma' \subseteq \Sigma$, then a model expansion of $I$ w.r.t.~$T$ is a structure $I'$ that interprets all of $\Sigma$, such that $I$ coincides with $I'$ on $\Sigma'$ and $I' \models T$. i.e., $I'$ a \emph{model} of $T$). 
+
+%\begin{example}
+%\label{ex:mx}
+%Continuing Example~\ref{ex:voctheostruct}, we expand the structure %$I_{ex}$ w.r.t. the theory $T_{ex}$ to a model $M$ by interpreting %the two symbols still missing from $I_{ex}$ as follows:
+%\begin{align*}
+%atoms_{M} = \{ & HasRegistration=socialDwelling \mapsto \false, \\
+%& HasRegistration=familyDwelling \mapsto \true, \\
+%& HasRegistration=other \mapsto \false, \\
+%& ApplicableRate=1 \mapsto \false, \\
+%& ApplicableRate=7 \mapsto \true, \\
+%& ApplicableRate=10 \mapsto \false\}
+%\end{align*}
+%\end{example}
+
+
+
+
+%\begin{example}
+%\label{ex:optimization}
+%Continuing Example~\ref{ex:voctheostruct}, applying optimization to minimize the term $ApplicableRate$ w.r.t.~$I_{ex}$ and theory $T_{ex}$ results in the following interpretation:
+%\begin{align*}
+%atoms_{I_{ex}} = \{ & HasRegistration=socialDwelling \mapsto \true, \\
+%& HasRegistration=familyDwelling \mapsto \false, \\
+%& HasRegistration=other \mapsto \false, \\
+%& ApplicableRate=1 \mapsto \true, \\
+%& ApplicableRate=7 \mapsto \false, \\
+%& ApplicableRate=10 \mapsto \false\}
+%\end{align*}
+%\end{example}
+
+
+%Neither model expansion nor optimisation are particularly useful inferences in the context of an interactive application, such as the notary system. Indeed, both inferences search for a \emph{total} interpretation and will therefore always attempt to assign a value to all unknown constants. In an interactive application, this is not the desired behaviour. 
+%In the original prototype of \cite{Marjolein}, the inference of \emph{propagation} was of central importance. 
+%Model expansion always searches for a single model and therefore it must fill in all the unknown atoms. 
+%For an interactive application, this is not very useful.
+In an interactive application it is not always desirable to search for a \textit{total }interpretation.
+For instance, if the notary has not yet filled in the number of children that the buyers have, we do not want the system to just guess a value. 
+For this reason, the prototype of \cite{ruleml/DeryckHVV18} relies heavily on the \emph{propagation} inference, which computes information that is common to all possible model expansions, and hence can discover properties that are implied \emph{regardless} of, e.g., the unknown number of children that the buyers have.
+%Formally, we define that a partial interpretation $\ci$ $T$-\emph{implies} a partial interpretation $\ci'$, denoted $\ci \models_T \ci'$, if for each model expansion $I$ of $\ci$ w.r.t.~$T$, $I \models \varphi$. 
+
+Formally, the \emph{propagation} inference takes as input a theory $T$ and partial interpretation $\ci$, and outputs the most precise partial interpretation $\ci^{prop}$ such that all model expansions $I$ of $\ci$ w.r.t.~$T$ are also model expansions of $\ci^{prop}$ w.r.t.~$T$.
+We say an atom is \emph{propagated} if it is unknown in the original interpretation $\ci$, but true or false in the more precise interpretation $\ci^{prop}$.
+In the running example, given theory $T_{ex}$ and partial interpretation $\ci_{ex}$, invoking propagation leads to
+\begin{align*}
+\ci_{ex}^{prop} = \{ & ApplicableRate\in\{1,7\}, \\
+& RegistrationType\in\{Social,Modest\}\}
+\end{align*} 
+as both $\ci_{ex}$ and $\ci_{ex}^{prop}$ have the same two model expansions with regard to $T_{ex}$, but $\ci_{ex}^{prop}$ is most precise.
+\begin{comment}
+
+
+Finally, given a theory $T$, a formula $\varphi$ is \emph{$T$-implied} by some partial interpretation $\ci$, denoted $\ci \models_T \varphi$, if $\varphi$ holds in all model expansions of $\ci$ w.r.t.~$T$.
+Equivalently, $\ci \models_T \varphi$ if $\varphi$ holds in $\ci^{prop}$ obtained by propagating $\ci$ w.r.t.~$T$.
+\end{comment}
+%While this inference task is computationally expensive in general, \idp also implements an approximate polynomial time algorithm.
+
+%\jve{Het zou eventueel ook nuttig kunnen zijn (maar lijkt me niet noodzakelijk), moest het running example ook een zinvolle propagation toelaten.}
+%\jo{akkoord}
+
+\begin{comment}
+\begin{example}
+\label{ex:prop}
+Continuing Example~\ref{ex:voctheostruct}, assume the structure $I_{prop}$:
+\begin{align*}
+Rate^I = \{ & 1,7,10\} \\
+RegistrationType^I = \{ & socialDwelling,familyDwelling,other\} \\
+& atoms_{I_{ex}} = \{ApplicableRate=10 \mapsto \true\}
+\end{align*}
+Now, propagating $I_{prop}$ under $T_{ex}$ leads to the atoms
+\begin{align*}
+\{ & HasRegistration=socialDwelling \mapsto \false, \\
+& HasRegistration=familyDwelling \mapsto \false, \\
+& HasRegistration=other \mapsto \true, \\
+& ApplicableRate=1 \mapsto \false, \\
+& ApplicableRate=7 \mapsto \false, \\
+& ApplicableRate=10 \mapsto \true\}
+\end{align*}
+as the definition in $T_{ex}$ forces $HasRegistration$ to be interpreted by $familyDwelling$ since $ApplicableRate$ is $10$ in $I_{prop}$.
+\end{example}
+The examples \ref{ex:voctheostruct} - \ref{ex:prop} have been conceived to illustrate the explained inferences, which benefits from their simplicity.
+This does not change the fact that the discussed principles and operations also apply to complex predicates and functions.
+\end{comment}
+
+%To develop the additional functionality required by the notary office, we also used \idp{}'s \emph{explanation} and \emph{relevance} inferences. These are discussed in Section \ref{sec:relevance}.
+
+%Another useful inference is \emph{propagation}. \jo{todo: optimization, explanation, relevance}
+
+%\Marjolein{In our application the inferences of \textit{propagation} and \textit{relevance} are of main importance. 
+%The more information is specified in structure $I$, the less free literals of vocabulary $\Sigma$ need to be determined in instance $J$, hence the less possible models remain.
+%Propagation is the calculation of the atoms from $\Sigma$ with respect to theory $T$ and based on the input information in $I$.
+%The inferences of relevance is discussed in length in section \ref{sec:relevance}.}
+
+%\subsection{Example}
+%\jo{Waarschijnlijk is het beter om volgende tekst tussen de uitleg van DMN en \idp te schuiven. Het is toch vooral een voorbeeld.}
+
+´%The use of Decision Model and Notation (DMN) was chosen as a methodology to analyze the applicable legislation and reflect it in connected decision tables \cite{DMN}. 
+%The main motivations to use DMN for this purpose are the availability and wide use of the open standard; and a straightforward translation to \fodot \cite{ruleml/DassevilleJJVD16}.
+
+%As a running example, our application needs to select the appropriate tax rate to calculate the registration duty, depending on the registration type of the estate.
+%\jo{start the running example here, written in DMN. The \fodot example later in this section should then be the translation from DMN.}
+
+%After the analysis phase, the structured knowledge on the domain was translated to FO(.) for use in the Knowledge Base System (KBS) IDP \mycite{IDP}.
+%For the application we use the IDP system, a state-of-the-art knowledge base system developed at KU Leuven \cite{IDP}.
+%In the IDP system the domain knowledge concerning registration duties is expressed in a rich, typed extension of First Order Logic to create a condensed knowledge base on the subject. 
+%It exists of a threefold structure.
+%A \textit{vocabulary} $\Sigma$ is a set of types, function and predicate symbols.
+%A \textit{theory} $T$ over $\Sigma$ is a set of sentences that expresses information on the domain in the form of constraints or definitions $\Delta$ and uses only symbols of $\Sigma$.
+%A \textit{structure} $I$ of $\Sigma$ represents a world.
+%It is an interpretation of (a part of) the vocabulary $\Sigma$ and associates functions and relations with their respective symbols.
+%A model $I$ of a theory T is an interpretation that satisfies all the sentences of T : $I \models T$.
+
+%After specifying the legislative constraints in DMN, we translate the decision tables to \fodot.
+
+%\jo{Gebruik kleine letters voor domeinelementen, om verwarring met vocabulariumsymbolen te minimaliseren.}
+
+%A variety of inferences can be applied to use this knowledge in applications.
+%\idp's model expansion now calculates an interpretation to $ApplicableRate$ and $IsRegistrationType$ that satisfies $T$ using the domains of $I$.
+
+%\idp can also optimize these interpretations for a given objective function. E.g., the symbol $ApplicableRate$ can be used as objective function, and by running the minimization inference, \idp calculates the interpretation to $ApplicableRate$ and $IsRegistrationType$ that satisfies $T$ but minimizes $ApplicableRate$.
+
+%\jo{Todo: propagation, explanation, relevance}
+
+%\Marjolein{ Te Verwijderen
+%\subsection{Interactive configuration and decision support}
+%To showcase the KB paradigm, a graphical user interface (gui) that supports users was developed \cite{ruleml/DassevilleJJVD16}. \jo{De gui dient als "interactive configuration" tool, todo: uitleg}
+
+%As a user-friendly interface is of major importance to allow notaries and citizens to work with the application, we combined our knowledge base specification with this tool.
+
+%However, our work started in 2017, after which the legislation changed on June 1st 2018. Also, new user requirements surfaced, which were not adressed by the gui. When we adapted to the new legislation, we simultaneously switched to an unpublished updated version of this gui, which supported the new user requirements.}
+
+%\jo{TODO: tell something about the fact that examples are simple (no complex predicates or functions), but that everything in the paper applies to those as well?}
+
+

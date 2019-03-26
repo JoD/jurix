@@ -1,0 +1,38 @@
+\section{Discussion and Conclusion}
+\label{conclusion}
+
+This paper presents an advanced prototype of an interactive decision enactment system, developed to support notaries during client meetings.
+It improves the original prototype of \cite{ruleml/DeryckHVV18} in two ways.  First, the knowledge base was updated to reflect  substantial changes to the regulations. % that came into force on June 1st 2018.
+Second, new inferences were integrated to meet additional requirements articulated by the notary.
+
+These results validate two central claims of the Knowledge Base Paradigm.
+%The experience with this unique case supports the claim from the knowledge base paradigm that knowledge bases are highly responsive to changes in the domain because they only contain actual domain knowledge and are not clouded by inference methods.
+First, the effort to update the knowledge base (0.5 person-days) was very small in comparison to the effort to create the initial knowledge base (10 person-days), especially when taking the size of the legal changes into account. This demonstrates the maintainability of an approach based on the KBP. % (13 of the 42 articles were deleted or modifies, and 5 new articles were added). 
+%Even when taking possible learning effects into account, this difference stays impressive.
+%Second, the improvements to the user interface demonstrate the feasibility of an approach in which the knowledge base is developed separately from the inference methods that can be applied to it. 
+Second, it also shows a first-time integration of the relevance and explanation inferences in an interactive application, and demonstrates their practical utility.  
+\begin{comment}
+In particular, we have implemented two pieces of functionality that were not originally foreseen when the knowledge base was developed, but that were demanded later by the notary office. We did so by applying two fully generic inferences to the existing knowledge base. 
+
+%The re-use of the automatic configuration interface of \cite{ruleml/DassevilleJJVD16} in the first prototype already concretize the claim that inferences can be developed separately from the problem it is intended to be used for.
+%This paper helps to build proof for the claim that knowledge bases can be reused by inferences by integrating for the first time inferences of relevance and explanation in the external interface without any need to amend the formulated domain knowledge.
+
+The \emph{relevance} inference addresses the need for efficient information gathering, as it narrows down the entire set of undecided atoms to those that matter for top-level decisions.
+This helps the notary avoid requesting superfluous information from his clients.
+Once an atom is propagated by the system, the \emph{explanation} inference allows to explore why this particular outcome is implied.
+
+
+
+More generally, the contributions of this paper are validation of the claims that knowledge bases are easy to maintain, even in the face of considerable changes in the domain; and that knowledge bases can be reused for other, unanticipated inference tasks.
+
+
+It also shows a first-time integration of the relevance and explanation inferences in an interactive application, and demonstrates their practical utility.  
+\end{comment}
+The resulting interactive decision enactment system is applicable to a wide range of applications.
+\begin{comment}
+
+
+We are already investigating another application, coincidentally also in the legal field, is the creation of a knowledge base that supports decision making given the Belgian legislation on public procurement.
+Furthermore, it would be valuable to develop a variant of the explanation inference that not only reports a user's choices that lead to a propagation, but also the constraints and/or rules that trigger the propagation. In the legal domain, this would be useful to argue which laws or legal texts enforce a particular outcome under the current choices. E.g., it could point a jurist to a precedent applicable to the case at hand.
+\end{comment}
+Future work regarding the developed interactive decision enactment system will focus on the use of the system in other legal domains and the application of new generic inferences.

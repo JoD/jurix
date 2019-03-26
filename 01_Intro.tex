@@ -1,24 +1,28 @@
 \section{Introduction}
 
-As most legislation, the Belgian legislation on registration duties with the purchase of real estate is complex.
-Although a simplification of the applicable rules took place in 2018, there still exist multiple registration types that differ in the different communities of the country.
-Moreover, as the legislation changed recently, no decent online support for interested buyers is available.
-%%For citizens it was difficult to know the amount of duties to be paid. 
-%%They would need to seek the advice of experts.
-%%This could often give an indication of the due amount.
-%%owever, to be sure the notary would need to perform a thorough investigation, hence taking up precious time in the bargaining process when purchasing a house.
-Because of the amplitude of the legislation, the multiplex exceptions and the variety of definitions attributed to some concepts, the risks of mistakes and omissions are numerous, also for experts like notaries.
-%%Even after the simplification of the applicable law in 2018, this remains the case.
+Legal applications have often been used as test cases for knowledge-based AI systems (e.g., \cite{cacm/SergotSKKHC86}). %, Zurek12}. %This was the case for traditional rule-based expert systems \cite{cacm/SergotSKKHC86}, but also for more recent systems such as, DROOLS \cite{Zurek12}. 
+In \cite{ruleml/DeryckHVV18}, an interactive decision enactment system for notaries was developed according to the Knowledge Base Paradigm (KBP) \cite{iclp/DeneckerV08}. 
 
-At the same time, many notaries still seem to be working in the old school way, with static printed questionnaires to gather information.
-The retrieval of the information requested in this questionnaire is sometimes cumbersome, and might include information like the contract date of previous purchases or sells, or the ownership share of previous owned real estate.
-Both the risk of omissions and the burdensome retrieval of information lead to the current project, in which an application was developed to support the notary in the decision making and in the relevant information detection.
-The case emerged at the request of notary Van Pelt, but is in the first place intended for general use by Belgian notaries.
-Evidently, also the public administration that bills the registration duty could use the application.
-Finally, due to its simplicity and included explanation features, also candidate home owners could use it to get a solid idea of the payable duties.
+The KBP advocates a strict separation between declarative domain knowledge and the use of this knowledge to perform certain tasks. 
+This separation allows the same knowledge to be used by different \emph{inference} algorithms in order to achieve different goals.
+\begin{comment}
+This is in contrast to  typical rule-based expert systems in which knowledge is formalized specifically with a forward-chaining inference algorithm in mind, or Prolog-based systems in which knowledge is formalized with a backwards query-answering algorithm in mind. 
 
-We developed an application with IDP.  
-This is a knowledge based system (KBS) that uses a derivative of First Order Logic to create a knowledge base that can be used in multiple ways with several forms of inference.
-Thanks to these different inferences, consequences of choices are be explicitated, superfluous questions can be skipped and the final duty to be applied is calculated.
+In the KBP, domain knowledge is formalized as a purely declarative \emph{knowledge base}, which is not tied to a specific \emph{inference} method, allowing the same knowledge to be reused by different algorithms in order to achieve different goals.
+\end{comment}
+As claimed by \cite{iclp/DeneckerV08}, this paradigm has two main advantages. First, the knowledge base is easier to maintain, because it can be considered in isolation from the inference methods.  Second, the knowledge base is easier to reuse for other inference tasks, since it is not tied to any specific inference method anyway.
 
-...
+In \cite{ruleml/DeryckHVV18}, a decision enactment system that supports Belgian notaries in their handling of real estate sales was developed according to the KBP. The Belgian legislation on registration duties that need to be paid when purchasing real estate is quite complex: there exist multiple registration types with different rates, and legislation from the country's three regions may apply in addition to federal regulations. The tool was developed together with notary Luc Van Pelt. Like other Belgian notaries, his office prides itself on its customer-friendly and confidential service. Therefore, he is looking for a system that provides support while interviewing clients, without interrupting the natural flow of the conversation.% The system should therefore be able to accept relevant information in any order and to provide useful feedback  on each piece of information.
+
+In this paper, we further analyze and develop the prototype that was developed in \cite{ruleml/DeryckHVV18}. This work focuses on validating the two advantages of the KBP mentioned above.
+First, we update the prototype to cope with a recent change to Belgian legislation. This change was significant enough to warrant substantial coverage by major Belgian news outlets and therefore presents an interesting and representative test case for the maintainability of the knowledge base.
+Second, during its evaluation of the prototype, the notary office identified additional desirable features that were not initially thought of. 
+We were able to add these features to the prototype in a generic, domain-independent way. This supports the claim that the functionality that users desire can indeed be implemented by applying domain-independent inference methods to a purely declarative knowledge base, even if this functionality was not originally foreseen when the knowledge base was constructed.
+
+This work results in a completely generic framework, similar to, but more powerful than that of \cite{ruleml/DassevilleJJVD16}. This generic framework can be applied to create powerful interactive decision enactment systems for other domains with minimal effort. It is developed using the \idp KBP system \mycite{IDP}, which allows it to benefit from both this system's expressive knowledge representation language \fodot, as well as from its efficient inference algorithms.
+ 
+The next section elaborates on the background of the case, the main characteristics of the original prototype and the changes in legislation.
+Section \ref{KBP} introduces the KBP and the \idp system.
+%In Section \ref{original} the main characteristics of the original prototype are brought to mind.
+Section \ref{interface} elaborates on new inferences in the revised interface.  
+Section \ref{related} presents related work, followed by a discussion and conclusion in Section \ref{conclusion}.
